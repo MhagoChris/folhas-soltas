@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Título do Capítulo - Folhas Soltas</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .capitulo-container {
+      display: flex;
+      justify-content: center;
+      margin: 2rem auto;
+      max-width: 1200px;
+      padding: 0 2rem;
+      box-sizing: border-box;
+    }
+
+    .banner-lateral {
+      width: 130px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .banner-lateral .card {
+      height: 200px;
+      background-color: #f9d89c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      border-radius: 6px;
+      text-align: center;
+      padding: 0.5rem;
+    }
+
+    .capitulo-texto {
+      width: 700px;
+      padding: 0 2rem;
+      box-sizing: border-box;
+    }
+
+    .capitulo-texto h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .capitulo-texto h3 {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #555;
+      margin-bottom: 1.5rem;
+    }
+
+    .capitulo-info {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+      margin-bottom: 1rem;
+    }
+
+    .capitulo-texto p {
+      text-align: justify;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    .navegacao-capitulo {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .navegacao-capitulo a {
+      margin: 0 1rem;
+      color: #5e2c2c;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .mais-historias {
+      margin: 3rem 0;
+    }
+
+    .mais-historias .card {
+      text-align: center;
+    }
+
+    .mais-historias img {
+      width: 100%;
+      border-radius: 4px 4px 0 0;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- TOPO -->
+  <div id="header"></div>
+
+  <!-- CONTEÚDO DO CAPÍTULO -->
+  <section class="capitulo-container">
+    <!-- BANNERS ESQUERDA (NOTÍCIAS) -->
+    <div class="banner-lateral">
+      <div class="card">Bienal do Livro movimenta mercado editorial</div>
+      <div class="card">Nova tendência de romances históricos brasileiros</div>
+      <div class="card">5 dicas para publicar seu primeiro livro</div>
+    </div>
+
+    <!-- TEXTO DO CAPÍTULO -->
+    <div class="capitulo-texto">
+        <h1 style="text-align: center; font-size: 2.4rem; margin-bottom: 0.5rem;">A Tempestade</h1>
+        <h2>Capítulo 3: A Travessia</h2>
+        <h3>por Marina Rocha</h3>
+        <div class="capitulo-info">Publicado em 10/05/2025</div>
+
+        <p>O vento cortava a pele enquanto Ana atravessava a ponte, cada passo mais incerto que o anterior. Atrás dela, o passado ruía em fragmentos, e à frente, o desconhecido chamava.</p>
+
+        <p>Desde que deixara sua casa naquela manhã cinzenta, carregava consigo apenas um caderno, uma caneta e a coragem que até então desconhecia. Seus olhos ardiam, mas ela não chorava.</p>
+
+        <p>O rio sob seus pés era um lembrete de que não havia retorno. Cada correnteza levava uma parte de sua antiga vida — e ela aceitava isso.</p>
+
+        <p>Ao chegar do outro lado, parou. Respirou fundo. A jornada só estava começando.</p>
+
+        <div class="navegacao-capitulo">
+            <a href="#">← Capítulo Anterior</a>
+            <a href="#">Próximo Capítulo →</a>
+        </div>
+    </div>
+
+    <!-- BANNERS DIREITA (NOTÍCIAS) -->
+    <div class="banner-lateral">
+      <div class="card">Entrevista: autora de “Luzes do Sertão” fala sobre infância</div>
+      <div class="card">Feira literária de Paraty bate recorde de público</div>
+      <div class="card">Livros infantis em alta no mercado nacional</div>
+    </div>
+  </section>
+
+  <!-- MAIS HISTÓRIAS -->
+  <section class="mais-historias">
+    <h3 class="text-center">Outras Histórias que Você Pode Gostar</h3>
+    <div class="cards-grid">
+      <div class="card">
+        <img src="imagens/historia1.jpg" alt="História 1" />
+        <div><strong>História 1</strong><br><a href="#">Ler</a></div>
+      </div>
+      <div class="card">
+        <img src="imagens/historia2.jpg" alt="História 2" />
+        <div><strong>História 2</strong><br><a href="#">Ler</a></div>
+      </div>
+      <div class="card">
+        <img src="imagens/historia3.jpg" alt="História 3" />
+        <div><strong>História 3</strong><br><a href="#">Ler</a></div>
+      </div>
+      <div class="card">
+        <img src="imagens/historia4.jpg" alt="História 4" />
+        <div><strong>História 4</strong><br><a href="#">Ler</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VOLTAR -->
+  <div class="text-center" style="margin: 3rem 0 2rem;">
+    <a href="historia.html" class="topo-btn">← Voltar para Lista de Histórias</a>
+  </div>
+  
+  <!-- RODAPÉ -->
+  <div id="footer"></div>
+
+</div>
+
+<script>
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("header").innerHTML = data);
+
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("footer").innerHTML = data);
+</script>
+
+</body>
+</html>

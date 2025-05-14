@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sobre - Folhas Soltas</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .secao {
+      margin: 2rem 0;
+    }
+
+    .equipe {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .membro {
+      background: #fffef9;
+      border: 1px solid #d4af37;
+      border-radius: 6px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .membro h4 {
+      margin: 0.5rem 0 0.3rem;
+    }
+
+    .membro p {
+      font-size: 0.9rem;
+    }
+
+    .membro a {
+      display: inline-block;
+      margin-top: 0.5rem;
+      color: #5e2c2c;
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+
+    .estatisticas {
+      background-color: #fffef9;
+      border: 1px solid #d4af37;
+      padding: 1rem;
+      border-radius: 6px;
+    }
+
+    .estat-item {
+      margin: 0.5rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- TOPO PADRÃO -->
+    <div id="header"></div>
+
+    <!-- QUEM SOMOS -->
+    <section class="secao">
+      <h2 class="text-center">Quem Somos</h2>
+      <p id="texto-sobre">
+        <!-- Carregado dinamicamente -->
+      </p>
+    </section>
+
+    <!-- EQUIPE -->
+    <section class="secao">
+      <h2 class="text-center">Nossa Equipe</h2>
+      <div class="equipe">
+        <div class="membro">
+          <h4>Cristiano José Pinto</h4>
+          <p>Diretor Geral e Fundador. Apaixonado por livros e pelas histórias que nos transformam.</p>
+          <a href="#">Instagram</a> | <a href="#">LinkedIn</a>
+        </div>
+        <div class="membro">
+          <h4>Nome do Editor</h4>
+          <p>Editor responsável. Curador dos conteúdos e voz da redação.</p>
+          <a href="#">Twitter</a> | <a href="#">LinkedIn</a>
+        </div>
+        <div class="membro">
+          <h4>Nome do Redator</h4>
+          <p>Redator literário. Cobre lançamentos e entrevistas com autores.</p>
+          <a href="#">Instagram</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ESTATÍSTICAS -->
+    <section class="secao">
+      <h2 class="text-center">Estatísticas do Site</h2>
+      <div class="estatisticas">
+        <div class="estat-item">👁️ Visitas ao Site: <strong id="visitas">0</strong></div>
+        <div class="estat-item">⏱️ Permanência Média: <strong id="tempo">0 min</strong></div>
+        <div class="estat-item">📖 Leituras - Histórias: <strong id="leituras-historias">0</strong></div>
+        <div class="estat-item">📰 Leituras - Notícias: <strong id="leituras-noticias">0</strong></div>
+        <div class="estat-item">✍️ Autores Parceiros: <strong id="autores">0</strong></div>
+        <div class="estat-item">📚 Histórias Cadastradas: <strong id="historias">0</strong></div>
+        <div class="estat-item">📄 Capítulos Publicados: <strong id="capitulos">0</strong></div>
+        <div class="estat-item">📕 Livros Cadastrados: <strong id="livros">0</strong></div>
+      </div>
+    </section>
+
+    <!-- RODAPÉ -->
+    <div id="footer"></div>
+
+  </div>
+
+  <!-- SCRIPT DE CARREGAMENTO SIMULADO -->
+  <script>
+    const dados = {
+      texto: "O Folhas Soltas nasceu da paixão pela literatura e do desejo de criar um espaço onde histórias ganham vida e autores têm voz. Aqui você encontra narrativas seriadas, notícias do mundo literário e livros de autores parceiros.",
+      visitas: 14280,
+      tempo: "3m 42s",
+      leiturasHistorias: 8320,
+      leiturasNoticias: 5640,
+      autores: 21,
+      historias: 68,
+      capitulos: 213,
+      livros: 37
+    };
+
+    document.getElementById('texto-sobre').textContent = dados.texto;
+    document.getElementById('visitas').textContent = dados.visitas;
+    document.getElementById('tempo').textContent = dados.tempo;
+    document.getElementById('leituras-historias').textContent = dados.leiturasHistorias;
+    document.getElementById('leituras-noticias').textContent = dados.leiturasNoticias;
+    document.getElementById('autores').textContent = dados.autores;
+    document.getElementById('historias').textContent = dados.historias;
+    document.getElementById('capitulos').textContent = dados.capitulos;
+    document.getElementById('livros').textContent = dados.livros;
+  </script>
+
+<script>
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("header").innerHTML = data);
+
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("footer").innerHTML = data);
+</script>
+
+</body>
+</html>

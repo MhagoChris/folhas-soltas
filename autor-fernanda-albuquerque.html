@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fernanda Albuquerque - Folhas Soltas</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .perfil-autor {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      margin-top: 2rem;
+    }
+
+    .espaco-lateral {
+      width: 10%;
+    }
+
+    .conteudo-autor {
+      width: 80%;
+    }
+
+    .bio {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+    }
+
+    .foto-autor {
+      width: 180px;
+      aspect-ratio: 3 / 4;
+      flex-shrink: 0;
+    }
+
+    .foto-autor img {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+
+    .bio-texto h2 {
+      font-size: 2rem;
+      color: #5e2c2c;
+      margin-bottom: 0.5rem;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+    }
+
+    .card a {
+      display: inline-block;
+      background-color: #f9d89c;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #5e2c2c;
+      font-weight: bold;
+    }
+
+    .secao {
+      margin-bottom: 3rem;
+    }
+
+    .secao h3 {
+      margin-bottom: 1rem;
+      color: #5e2c2c;
+      border-bottom: 2px solid #d4af37;
+      padding-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- TOPO PADRÃO -->
+  <div id="header"></div>
+
+  <!-- PERFIL DO AUTOR -->
+  <section class="perfil-autor">
+    <div class="espaco-lateral">
+      <div class="card" style="height: 300px; background-color: #f9d89c; text-align: center;">
+        Anúncio<br>Lateral
+      </div>
+    </div>
+
+    <div class="conteudo-autor">
+      <div class="bio">
+        <div class="foto-autor">
+          <img src="autores/fernanda.jpg" alt="Fernanda Albuquerque">
+        </div>
+        <div class="bio-texto">
+          <h2>Fernanda Albuquerque</h2>
+          <p>
+            Fernanda Albuquerque é escritora, poeta e professora de literatura. Sua escrita
+            é marcada pela sensibilidade e pelas paisagens interiores que traduz em palavras.
+            Publicou contos e romances premiados, além de participar de coletâneas independentes.
+            Em Folhas Soltas, compartilha histórias que misturam memória, imaginação e emoção.
+          </p>
+        </div>
+      </div>
+
+      <!-- HISTÓRIAS DO AUTOR -->
+      <div class="secao">
+        <h3>Histórias Publicadas</h3>
+        <div class="cards-grid">
+          <div class="card">
+            <img src="historia1.jpg" alt="Sombras do Norte">
+            <strong>Sombras do Norte</strong><br>
+            <a href="historia-sombras-do-norte.html">Ver Capítulos</a>
+          </div>
+          <div class="card">
+            <img src="historia2.jpg" alt="Poente Silencioso">
+            <strong>Poente Silencioso</strong><br>
+            <a href="historia-poente-silencioso.html">Ver Capítulos</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIVROS DO AUTOR -->
+      <div class="secao">
+        <h3>Livros na Loja</h3>
+        <div class="cards-grid">
+          <div class="card">
+            <img src="livros/luz-do-vale.jpg" alt="Luz do Vale">
+            <strong>Luz do Vale (2023)</strong><br>
+            <a href="livro-luz-do-vale.html">Ver Detalhes</a>
+          </div>
+          <div class="card">
+            <img src="livros/sombras-em-verso.jpg" alt="Sombras em Verso">
+            <strong>Sombras em Verso (2021)</strong><br>
+            <a href="livro-sombras-em-verso.html">Ver Detalhes</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- VOLTAR -->
+      <div class="text-center">
+        <a href="autores.html" class="topo-btn">← Voltar para Autores</a>
+      </div>
+    </div>
+
+    <div class="espaco-lateral">
+      <div class="card" style="height: 300px; background-color: #f9d89c; text-align: center;">
+        Anúncio<br>Lateral
+      </div>
+    </div>
+  </section>
+  
+  <!-- RODAPÉ -->
+  <div id="footer"></div>
+</div>
+
+<script>
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("header").innerHTML = data);
+
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("footer").innerHTML = data);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Título da Notícia - Folhas Soltas</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .noticia-container {
+      display: flex;
+      justify-content: center;
+      margin: 2rem auto;
+      max-width: 1200px;
+      padding: 0 2rem;
+      box-sizing: border-box;
+    }
+
+    .banner-lateral {
+      width: 130px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .banner-lateral .card {
+      height: 200px;
+      background-color: #f9d89c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      border-radius: 6px;
+    }
+
+    .noticia-texto {
+      width: 700px;
+      padding: 0 2rem;
+      box-sizing: border-box;
+    }
+
+    .noticia-texto img {
+      width: 100%;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      display: block;
+    }
+
+    .noticia-info {
+      color: #555;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+
+    .noticia-texto p {
+      text-align: justify;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    h2.text-center {
+      text-align: center;
+      font-size: 2.2rem;
+      margin: 2rem auto 1rem;
+    }
+
+    .mais-livros {
+      margin: 3rem 0;
+    }
+
+    .mais-livros .card {
+      text-align: center;
+    }
+
+    .mais-livros img {
+      width: 100%;
+      border-radius: 4px 4px 0 0;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- TOPO -->
+  <div id="header"></div>
+
+  <!-- TÍTULO -->
+  <h2 class="text-center">Título da Notícia em Destaque</h2>
+
+  <!-- CONTEÚDO -->
+  <section class="noticia-container">
+    <!-- BANNERS ESQUERDA -->
+    <div class="banner-lateral">
+      <div class="card">Banner 1</div>
+      <div class="card">Banner 2</div>
+      <div class="card">Banner 3</div>
+    </div>
+
+    <!-- TEXTO -->
+    <div class="noticia-texto">
+      <img src="imagens/noticia-exemplo.jpg" alt="Imagem da notícia" />
+      <div class="noticia-info">
+        Fonte: <strong>site-literario.com</strong> | Publicado em: 09/05/2025
+      </div>
+      <p><strong>Chamada:</strong> Esta é uma breve introdução da matéria, destacando o ponto central da notícia.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+      <p>Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Cras dapibus.</p>
+      <p>Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
+    </div>
+
+    <!-- BANNERS DIREITA -->
+    <div class="banner-lateral">
+      <div class="card">Banner 4</div>
+      <div class="card">Banner 5</div>
+      <div class="card">Banner 6</div>
+    </div>
+  </section>
+
+  <!-- MAIS DO MUNDO LITERÁRIO -->
+  <section class="mais-livros">
+    <h3 class="text-center">Mais do Mundo Literário</h3>
+    <div class="cards-grid">
+      <div class="card">
+        <img src="imagens/livro1.jpg" alt="Livro 1" />
+        <div><strong>Livro 1</strong><br><a href="#">Ver mais</a></div>
+      </div>
+      <div class="card">
+        <img src="imagens/livro2.jpg" alt="Livro 2" />
+        <div><strong>Livro 2</strong><br><a href="#">Ver mais</a></div>
+      </div>
+      <div class="card">
+        <img src="imagens/livro3.jpg" alt="Livro 3" />
+        <div><strong>Livro 3</strong><br><a href="#">Ver mais</a></div>
+      </div>
+      <div class="card">
+        <img src="imagens/livro4.jpg" alt="Livro 4" />
+        <div><strong>Livro 4</strong><br><a href="#">Ver mais</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOTÃO VOLTAR -->
+  <div class="text-center" style="margin: 3rem 0 2rem;">
+    <a href="noticias.html" class="topo-btn">← Voltar para Notícias</a>
+  </div>
+  
+  <!-- RODAPÉ -->
+  <div id="footer"></div>
+
+</div>
+
+<script>
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("header").innerHTML = data);
+
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("footer").innerHTML = data);
+</script>
+
+</body>
+</html>

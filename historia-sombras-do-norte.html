@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sombras do Norte - Folhas Soltas</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .pagina-historia {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .espaco-lateral {
+      width: 10%;
+    }
+
+    .conteudo-historia {
+      width: 80%;
+    }
+
+    .conteudo-historia h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-top: 2rem;
+      color: #5e2c2c;
+    }
+
+    .lista-capitulos {
+      margin: 2rem 0;
+    }
+
+    .lista-capitulos ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .lista-capitulos li {
+      margin: 0.5rem 0;
+    }
+
+    .lista-capitulos a {
+        text-decoration: none;
+        color: #5e2c2c;
+        font-weight: bold;
+        display: inline-block;
+        padding: 0.2rem 0;
+        border-bottom: 1px solid #d4af37;
+        transition: color 0.2s;
+    }
+
+    .lista-capitulos a:hover {
+        color: #d4af37;
+    }
+
+    .voltar {
+      text-align: center;
+      margin: 2rem 0;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- TOPO PADRÃO -->
+  <div id="header"></div>
+
+  <!-- CONTEÚDO -->
+  <section class="pagina-historia">
+    <div class="espaco-lateral">
+      <div class="card" style="height: 300px; background-color: #f9d89c; text-align: center;">
+        Anúncio<br>Lateral
+      </div>
+    </div>
+
+    <div class="conteudo-historia">
+      <h2>Sombras do Norte</h2>
+
+      <div class="lista-capitulos">
+        <h3>Capítulos Publicados</h3>
+        <ul>
+          <li><a href="historia.html?id=1">Capítulo 1 – A Chegada</a></li>
+          <li><a href="historia.html?id=2">Capítulo 2 – Ecos do Passado</a></li>
+          <li><a href="historia.html?id=3">Capítulo 3 – O Caminho Gelado</a></li>
+          <li><a href="historia.html?id=4">Capítulo 4 – Encontro com a Sombra</a></li>
+          <li><a href="historia.html?id=5">Capítulo 5 – Neve Vermelha</a></li>
+        </ul>
+      </div>
+
+      <div class="voltar">
+        <a href="historias.html" class="topo-btn">← Voltar para Histórias</a>
+      </div>
+    </div>
+
+    <div class="espaco-lateral">
+      <div class="card" style="height: 300px; background-color: #f9d89c; text-align: center;">
+        Anúncio<br>Lateral
+      </div>
+    </div>
+  </section>
+  
+  <!-- RODAPÉ -->
+  <div id="footer"></div>
+
+</div>
+
+<script>
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("header").innerHTML = data);
+
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("footer").innerHTML = data);
+</script>
+
+</body>
+</html>

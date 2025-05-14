@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Folhas Soltas - Início</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="container">
+
+  <div id="header"></div>
+
+  <!-- Destaques + Banners Laterais -->
+  <div class="main-container">
+    <div class="banner-lateral">
+      <div class="card">
+        <img src="banner-lateral-esq.jpg" alt="Anuncie aqui e faça parte dessa jornada literária!">
+      </div>
+    </div>
+
+    <div class="carrossel" onmouseover="pausarCarrossel()" onmouseout="iniciarCarrossel()">
+      <div class="carrossel-item active">
+        <img src="img1.jpg" alt="">
+        <a href="#">Autor: Clara Mendes</a>
+      </div>
+      <div class="carrossel-item">
+        <img src="img2.jpg" alt="">
+        <a href="#">Nova história: A Janela do Tempo</a>
+      </div>
+      <div class="carrossel-item">
+        <img src="img3.jpg" alt="">
+        <a href="#">Livro: Caminhos de Vento</a>
+      </div>
+      <div class="carrossel-item">
+        <img src="img4.jpg" alt="">
+        <a href="#">Notícia: Bienal do Livro</a>
+      </div>
+      <div class="carrossel-item">
+        <img src="img5.jpg" alt="">
+        <a href="#">Autor: João Pedro Vale</a>
+      </div>
+      <div class="carrossel-item">
+        <img src="img6.jpg" alt="">
+        <a href="#">Destaque: Poesia Visual</a>
+      </div>
+      <div class="carrossel-item">
+        <img src="img7.jpg" alt="">
+        <a href="#">Entrevista com autores</a>
+      </div>
+      <div class="carrossel-item">
+        <img src="img8.jpg" alt="">
+        <a href="#">Nova seção em breve!</a>
+      </div>
+    </div>
+
+    <div class="banner-lateral">
+      <div class="card">
+        <img src="banner-lateral-dir.jpg" alt="Anuncie aqui e faça parte dessa jornada literária!">
+      </div>
+    </div>
+  </div>
+
+  <!-- Atualizações -->
+  <div class="atualizacoes">
+
+    <div class="secao">
+      <h2>Últimos Capítulos</h2>
+      <div class="cards-grid">
+        <div class="card">Capítulo 1<br><a href="#">Leia mais</a></div>
+        <div class="card">Capítulo 2<br><a href="#">Leia mais</a></div>
+        <div class="card">Capítulo 3<br><a href="#">Leia mais</a></div>
+        <div class="card">Capítulo 4<br><a href="#">Leia mais</a></div>
+      </div>
+    </div>
+
+    <div class="banner-horizontal">
+      <div class="card">
+        <a href="#"><img src="banner-meio.jpg" alt="Anuncie aqui e faça parte dessa jornada literária!"></a>
+      </div>
+    </div>
+
+    <div class="secao">
+      <h2>Notícias Literárias</h2>
+      <div class="cards-grid">
+        <div class="card">Notícia 1<br><a href="#">Leia mais</a></div>
+        <div class="card">Notícia 2<br><a href="#">Leia mais</a></div>
+        <div class="card">Notícia 3<br><a href="#">Leia mais</a></div>
+        <div class="card">Notícia 4<br><a href="#">Leia mais</a></div>
+      </div>
+    </div>
+
+    <div class="secao">
+      <h2>Livros em Destaque</h2>
+      <div class="cards-grid">
+        <div class="card">Livro 1<br><a href="#">Ver detalhes</a></div>
+        <div class="card">Livro 2<br><a href="#">Ver detalhes</a></div>
+        <div class="card">Livro 3<br><a href="#">Ver detalhes</a></div>
+        <div class="card">Livro 4<br><a href="#">Ver detalhes</a></div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Rodapé -->
+  <div id="footer"></div>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.carrossel-item');
+  let current = 0;
+  let intervalo = setInterval(proximoSlide, 5000);
+
+  function mostrarSlide(index) {
+    slides.forEach((slide, i) => {
+      slide.classList.remove('active');
+      if (i === index) {
+        slide.classList.add('active');
+      }
+    });
+  }
+
+  function proximoSlide() {
+    current = (current + 1) % slides.length;
+    mostrarSlide(current);
+  }
+
+  function pausarCarrossel() {
+    clearInterval(intervalo);
+  }
+
+  function iniciarCarrossel() {
+    intervalo = setInterval(proximoSlide, 5000);
+  }
+
+  mostrarSlide(current);
+</script>
+
+<script>
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("header").innerHTML = data);
+
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("footer").innerHTML = data);
+</script>
+
+</body>
+</html>

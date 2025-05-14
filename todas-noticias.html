@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Todas as Notícias - Folhas Soltas</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    details summary {
+      cursor: pointer;
+      font-weight: bold;
+      margin: 1rem 0 0.5rem;
+      background-color: #fdf6e9;
+      padding: 0.5rem;
+      border-radius: 4px;
+      border: 1px solid #d4af37;
+    }
+
+    .busca {
+      margin: 2rem 0;
+      text-align: center;
+    }
+
+    .busca input {
+      width: 80%;
+      max-width: 500px;
+      padding: 0.7rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .menu-abas {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+
+    .menu-abas a {
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      background-color: #f9d89c;
+      text-decoration: none;
+      color: #5e2c2c;
+      font-weight: bold;
+    }
+
+    .menu-abas a.active {
+      background-color: #d4af37;
+    }
+
+    .grupo-noticias {
+      display: none;
+    }
+
+    .grupo-noticias.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- TOPO PADRÃO -->
+  <div id="header"></div>
+
+  <!-- BUSCA ÚNICA -->
+  <section class="busca">
+    <input type="text" placeholder="Busque por título, palavra-chave, tema, fonte ou data...">
+  </section>
+
+  <!-- MENU DE ABAS ATIVAS -->
+  <div class="menu-abas">
+    <a href="#gerais" class="active" onclick="mostrarCategoria('gerais')">Gerais</a>
+    <a href="#entrevistas" onclick="mostrarCategoria('entrevistas')">Entrevistas</a>
+    <a href="#eventos" onclick="mostrarCategoria('eventos')">Eventos</a>
+    <a href="#dicas" onclick="mostrarCategoria('dicas')">Dicas de Leitura</a>
+    <a href="#videos" onclick="mostrarCategoria('videos')">Vídeos</a>
+  </div>
+
+  <!-- CONTEÚDO POR CATEGORIA -->
+  <section id="gerais" class="grupo-noticias active">
+    <h2 class="text-center">Notícias Gerais</h2>
+
+    <details open>
+      <summary>Recentes</summary>
+      <div class="cards-grid">
+        <div class="card"><a href="noticia.html">Notícia Geral 1</a></div>
+        <div class="card"><a href="noticia.html">Notícia Geral 2</a></div>
+        <div class="card"><a href="noticia.html">Notícia Geral 3</a></div>
+        <div class="card"><a href="noticia.html">Notícia Geral 4</a></div>
+      </div>
+    </details>
+
+    <details>
+      <summary>Semana</summary>
+      <ul>
+        <li><a href="noticia.html">Notícia da Semana 1</a></li>
+        <li><a href="noticia.html">Notícia da Semana 2</a></li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>Mês</summary>
+      <ul>
+        <li><a href="noticia.html">Notícia do Mês 1</a></li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>Ano</summary>
+      <details>
+        <summary>2025 - Maio</summary>
+        <ul>
+          <li><a href="noticia.html">Notícia de Maio</a></li>
+        </ul>
+      </details>
+    </details>
+  </section>
+
+  <section id="entrevistas" class="grupo-noticias">
+    <h2 class="text-center">Entrevistas</h2>
+    <details open>
+      <summary>Recentes</summary>
+      <div class="cards-grid">
+        <div class="card"><a href="noticia.html">Entrevista 1</a></div>
+        <div class="card"><a href="noticia.html">Entrevista 2</a></div>
+        <div class="card"><a href="noticia.html">Entrevista 3</a></div>
+        <div class="card"><a href="noticia.html">Entrevista 4</a></div>
+      </div>
+    </details>
+  </section>
+
+  <section id="eventos" class="grupo-noticias">
+    <h2 class="text-center">Eventos</h2>
+    <details open>
+      <summary>Recentes</summary>
+      <div class="cards-grid">
+        <div class="card"><a href="noticia.html">Evento 1</a></div>
+        <div class="card"><a href="noticia.html">Evento 2</a></div>
+        <div class="card"><a href="noticia.html">Evento 3</a></div>
+        <div class="card"><a href="noticia.html">Evento 4</a></div>
+      </div>
+    </details>
+  </section>
+
+  <section id="dicas" class="grupo-noticias">
+    <h2 class="text-center">Dicas de Leitura</h2>
+    <details open>
+      <summary>Recentes</summary>
+      <div class="cards-grid">
+        <div class="card"><a href="noticia.html">Dica 1</a></div>
+        <div class="card"><a href="noticia.html">Dica 2</a></div>
+        <div class="card"><a href="noticia.html">Dica 3</a></div>
+        <div class="card"><a href="noticia.html">Dica 4</a></div>
+      </div>
+    </details>
+  </section>
+
+  <section id="videos" class="grupo-noticias">
+    <h2 class="text-center">Vídeos</h2>
+    <details open>
+      <summary>Recentes</summary>
+      <div class="cards-grid">
+        <div class="card"><a href="video.html">Vídeo 1</a></div>
+        <div class="card"><a href="video.html">Vídeo 2</a></div>
+        <div class="card"><a href="video.html">Vídeo 3</a></div>
+        <div class="card"><a href="video.html">Vídeo 4</a></div>
+      </div>
+    </details>
+  </section>
+
+  <!-- BOTÃO VOLTAR PARA SEÇÃO DE NOTÍCIAS -->
+  <div class="text-center" style="margin: 3rem 0 2rem;">
+    <a href="noticias.html" class="topo-btn">← Voltar para Seção de Notícias</a>
+  </div>
+  
+  <!-- RODAPÉ -->
+  <div id="footer"></div>
+</div>
+
+<script>
+  function mostrarCategoria(id) {
+    document.querySelectorAll('.grupo-noticias').forEach(div => div.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+
+    document.querySelectorAll('.menu-abas a').forEach(a => a.classList.remove('active'));
+    const link = Array.from(document.querySelectorAll('.menu-abas a')).find(a => a.href.includes(`#${id}`));
+    if (link) link.classList.add('active');
+  }
+</script>
+
+<script>
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("header").innerHTML = data);
+
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("footer").innerHTML = data);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Histórias - Folhas Soltas</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .busca-historias {
+      margin: 2rem 0;
+    }
+
+    .busca-historias input {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .secao-historias {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .espaco-lateral {
+      width: 10%;
+    }
+
+    .lista-historias {
+      width: 80%;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+    }
+
+    .card a {
+      display: inline-block;
+      margin-top: 0.5rem;
+      background-color: #f9d89c;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #5e2c2c;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- TOPO PADRÃO -->
+  <div id="header"></div>
+
+  <!-- CAIXA DE PESQUISA -->
+  <section class="busca-historias">
+    <input type="text" placeholder="Buscar por título, autor, gênero ou palavra-chave...">
+  </section>
+
+  <!-- LISTA DE HISTÓRIAS -->
+  <section class="secao-historias">
+    <div class="espaco-lateral">
+      <div class="card" style="height: 300px; background-color: #f9d89c; text-align: center;">
+        Anúncio<br>Lateral
+      </div>
+    </div>
+
+    <div class="lista-historias">
+      <h2 class="text-center">Histórias Publicadas</h2>
+      <div class="cards-grid">
+        <!-- Exemplo de Card de História -->
+        <div class="card">
+          <img src="historia1.jpg" alt="Sombras do Norte">
+          <strong>Sombras do Norte</strong><br>
+          <a href="historia-sombras-do-norte.html">Ver Capítulos</a>
+        </div>
+        <div class="card">
+          <img src="historia2.jpg" alt="Fragmentos do Infinito">
+          <strong>Fragmentos do Infinito</strong><br>
+          <a href="historia-fragmentos-do-infinito.html">Ver Capítulos</a>
+        </div>
+        <div class="card">
+          <img src="historia3.jpg" alt="Chuva de Fogo">
+          <strong>Chuva de Fogo</strong><br>
+          <a href="historia-chuva-de-fogo.html">Ver Capítulos</a>
+        </div>
+        <div class="card">
+          <img src="historia4.jpg" alt="A Canção das Almas">
+          <strong>A Canção das Almas</strong><br>
+          <a href="historia-cancao-das-almas.html">Ver Capítulos</a>
+        </div>
+        <!-- Adicione mais cards conforme necessário -->
+      </div>
+    </div>
+
+    <div class="espaco-lateral">
+      <div class="card" style="height: 300px; background-color: #f9d89c; text-align: center;">
+        Anúncio<br>Lateral
+      </div>
+    </div>
+  </section>
+  
+  <!-- RODAPÉ -->
+  <div id="footer"></div>
+
+</div>
+
+<script>
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("header").innerHTML = data);
+
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("footer").innerHTML = data);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contato - Folhas Soltas</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .formulario {
+      margin: 2rem 0;
+      background-color: #fffef9;
+      padding: 1.5rem;
+      border: 1px solid #d4af37;
+      border-radius: 6px;
+    }
+
+    .formulario label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    .formulario input, .formulario textarea, .formulario select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .formulario textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .formulario button {
+      margin-top: 1.5rem;
+      background-color: #f9d89c;
+      color: #5e2c2c;
+      font-weight: bold;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .oculto {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- TOPO PADRÃO -->
+  <div id="header"></div>
+
+  <!-- FORMULÁRIO DE CONTATO -->
+  <section class="formulario">
+    <h2 class="text-center">Fale Conosco</h2>
+
+    <label for="tipo">Sou:</label>
+    <select id="tipo" onchange="alternarFormulario()">
+      <option value="leitor">Leitor</option>
+      <option value="anunciante">Anunciante</option>
+      <option value="autor">Autor</option>
+    </select>
+
+    <!-- FORMULÁRIO LEITOR (PADRÃO) -->
+    <form id="form-leitor">
+      <label for="nome-leitor">Nome</label>
+      <input type="text" id="nome-leitor" name="nome">
+
+      <label for="email-leitor">E-mail</label>
+      <input type="email" id="email-leitor" name="email">
+
+      <label for="mensagem-leitor">Mensagem</label>
+      <textarea id="mensagem-leitor" name="mensagem"></textarea>
+
+      <button type="submit">Enviar</button>
+    </form>
+
+    <!-- FORMULÁRIO ANUNCIANTE -->
+    <form id="form-anunciante" class="oculto">
+      <label for="empresa">Nome da Empresa</label>
+      <input type="text" id="empresa" name="empresa">
+
+      <label for="responsavel">Responsável</label>
+      <input type="text" id="responsavel" name="responsavel">
+
+      <label for="email-anunciante">E-mail</label>
+      <input type="email" id="email-anunciante" name="email">
+
+      <label for="celular">Celular / WhatsApp</label>
+      <input type="text" id="celular" name="celular">
+
+      <label for="mensagem-anunciante">Mensagem</label>
+      <textarea id="mensagem-anunciante" name="mensagem"></textarea>
+
+      <button type="submit">Enviar</button>
+    </form>
+
+    <!-- FORMULÁRIO AUTOR -->
+    <form id="form-autor" class="oculto">
+      <label for="nome-autor">Nome</label>
+      <input type="text" id="nome-autor" name="nome">
+
+      <label for="email-autor">E-mail</label>
+      <input type="email" id="email-autor" name="email">
+
+      <label for="bio">Biografia</label>
+      <textarea id="bio" name="bio"></textarea>
+
+      <label for="rede">Rede Social ou Portfólio</label>
+      <input type="url" id="rede" name="rede">
+
+      <label for="mensagem-autor">Mensagem</label>
+      <textarea id="mensagem-autor" name="mensagem"></textarea>
+
+      <button type="submit">Enviar</button>
+    </form>
+  </section>
+  
+  <!-- RODAPÉ -->
+  <div id="footer"></div>
+</div>
+
+<!-- SCRIPT -->
+<script>
+  function alternarFormulario() {
+    const tipo = document.getElementById('tipo').value;
+
+    document.getElementById('form-leitor').classList.add('oculto');
+    document.getElementById('form-anunciante').classList.add('oculto');
+    document.getElementById('form-autor').classList.add('oculto');
+
+    if (tipo === 'anunciante') {
+      document.getElementById('form-anunciante').classList.remove('oculto');
+    } else if (tipo === 'autor') {
+      document.getElementById('form-autor').classList.remove('oculto');
+    } else {
+      document.getElementById('form-leitor').classList.remove('oculto');
+    }
+  }
+</script>
+
+<script>
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("header").innerHTML = data);
+
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("footer").innerHTML = data);
+</script>
+
+</body>
+</html>

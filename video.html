@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vídeo - Folhas Soltas</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .video-container {
+      display: flex;
+      gap: 1rem;
+      margin: 2rem 0;
+      align-items: stretch;
+    }
+
+    .video-banner,
+    .video-relacionados {
+      width: 20%;
+    }
+
+    .video-banner .card,
+    .video-relacionados .card {
+      height: 100%;
+    }
+
+    .video-player {
+      width: 60%;
+    }
+
+    .video-player iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+      border-radius: 6px;
+    }
+
+    .video-details {
+      margin-top: 1rem;
+    }
+
+    .video-details h2 {
+      margin: 0.5rem 0;
+    }
+
+    .video-details .fonte {
+      font-style: italic;
+      color: #555;
+      margin-bottom: 1rem;
+    }
+
+    .relacionado {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .relacionado .card {
+      padding: 0.5rem;
+      border: 1px solid #d4af37;
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    .relacionado img {
+      width: 100%;
+      border-radius: 4px;
+    }
+
+    .relacionado a {
+      text-decoration: none;
+      color: #5e2c2c;
+      font-weight: bold;
+      display: block;
+      margin-top: 0.3rem;
+    }
+
+    .busca-videos input {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .mais-folhas {
+      margin: 2rem 0;
+    }
+
+    .mais-folhas h3 {
+      margin-bottom: 1rem;
+      color: #5e2c2c;
+    }
+
+    .mais-folhas .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .btn-voltar {
+      display: block;
+      text-align: center;
+      margin: 3rem 0 1rem;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- TOPO PADRÃO -->
+  <div id="header"></div>
+
+  <!-- CAMPO DE BUSCA -->
+  <section class="busca-videos">
+    <input type="text" id="buscaInput" placeholder="Buscar por título, tema ou palavra-chave..." oninput="filtrarVideos()">
+  </section>
+
+  <!-- RESULTADO DE BUSCA -->
+  <div class="resultado-pesquisa" id="resultadoPesquisa" style="display:none;">
+    <h2 class="text-center">Resultados da Busca</h2>
+    <div class="resultado-cards cards-grid" id="cardsResultado"></div>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="video-container" id="videoPrincipal">
+    <!-- Banner Lateral Esquerdo -->
+    <div class="video-banner">
+      <div class="card">
+        <img src="banner-lateral-esq.jpg" alt="Anuncie aqui">
+      </div>
+    </div>
+
+    <!-- Player e Detalhes -->
+    <div class="video-player">
+      <iframe src="https://www.youtube.com/embed/dD_oB1dZMus?start=57" allowfullscreen></iframe>
+      <div class="video-details">
+        <h2>Trailer – O Homem que Sabia Demais</h2>
+        <div class="fonte">Canal: Cinespacão</div>
+        <p>Assista ao clássico de Alfred Hitchcock que explora suspense e drama com maestria.</p>
+      </div>
+    </div>
+
+    <!-- Vídeos Relacionados -->
+    <div class="video-relacionados">
+      <div class="relacionado">
+        <div class="card"><img src="video1-thumb.jpg" alt=""><a href="video.html?id=1">Vídeo 1</a></div>
+        <div class="card"><img src="video2-thumb.jpg" alt=""><a href="video.html?id=2">Vídeo 2</a></div>
+        <div class="card"><img src="video3-thumb.jpg" alt=""><a href="video.html?id=3">Vídeo 3</a></div>
+        <div class="card"><img src="video4-thumb.jpg" alt=""><a href="video.html?id=4">Vídeo 4</a></div>
+        <div class="card"><img src="video5-thumb.jpg" alt=""><a href="video.html?id=5">Vídeo 5</a></div>
+        <div class="card"><img src="video6-thumb.jpg" alt=""><a href="video.html?id=6">Vídeo 6</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIS FOLHAS SOLTAS -->
+  <div class="mais-folhas">
+    <h3 class="text-center">Mais Folhas Soltas</h3>
+    <div class="cards-grid" id="maisFolhasContainer">
+      <!-- Preenchido por JavaScript -->
+    </div>
+  </div>
+
+  <!-- BOTÃO VOLTAR PARA SEÇÃO -->
+  <div class="btn-voltar">
+    <a href="noticias.html#videos" class="topo-btn">← Voltar para Seção de Vídeos</a>
+  </div>
+  
+  <!-- RODAPÉ -->
+  <div id="footer"></div>
+</div>
+
+<script>
+  const todosVideos = [
+    { id: 1, titulo: 'Vídeo 1', thumb: 'video1-thumb.jpg' },
+    { id: 2, titulo: 'Vídeo 2', thumb: 'video2-thumb.jpg' },
+    { id: 3, titulo: 'Vídeo 3', thumb: 'video3-thumb.jpg' },
+    { id: 4, titulo: 'Vídeo 4', thumb: 'video4-thumb.jpg' },
+    { id: 5, titulo: 'Vídeo 5', thumb: 'video5-thumb.jpg' },
+    { id: 6, titulo: 'Vídeo 6', thumb: 'video6-thumb.jpg' },
+    { id: 7, titulo: 'Vídeo 7', thumb: 'video7-thumb.jpg' },
+    { id: 8, titulo: 'Vídeo 8', thumb: 'video8-thumb.jpg' }
+  ];
+
+  function filtrarVideos() {
+    const input = document.getElementById('buscaInput').value.toLowerCase();
+    const container = document.getElementById('cardsResultado');
+    const resultado = document.getElementById('resultadoPesquisa');
+    const player = document.getElementById('videoPrincipal');
+
+    container.innerHTML = '';
+
+    const filtrados = todosVideos.filter(video =>
+      video.titulo.toLowerCase().includes(input)
+    );
+
+    if (input.length > 0 && filtrados.length > 0) {
+      resultado.style.display = 'block';
+      player.style.display = 'none';
+
+      filtrados.forEach(video => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${video.thumb}" alt="${video.titulo}">
+          <a href="video.html?id=${video.id}">${video.titulo}</a>
+        `;
+        container.appendChild(card);
+      });
+    } else {
+      resultado.style.display = 'none';
+      player.style.display = 'flex';
+    }
+  }
+
+  // Carregar 4 vídeos aleatórios para "Mais Folhas Soltas"
+  function carregarMaisFolhas() {
+    const embaralhados = [...todosVideos].sort(() => 0.5 - Math.random()).slice(0, 4);
+    const container = document.getElementById('maisFolhasContainer');
+    container.innerHTML = '';
+
+    embaralhados.forEach(video => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <img src="${video.thumb}" alt="${video.titulo}">
+        <a href="video.html?id=${video.id}">${video.titulo}</a>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  carregarMaisFolhas();
+</script>
+
+<script>
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("header").innerHTML = data);
+
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("footer").innerHTML = data);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Notícias - Folhas Soltas</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="container">
+
+  <!-- TÍTULO -->
+  <div id="header"></div>
+
+  <!-- CARROSSEL + BANNERS LATERAIS -->
+  <div class="main-container">
+    <div class="banner-lateral">
+      <div class="card">
+        <img src="banner-lateral-esq.jpg" alt="Anuncie aqui">
+      </div>
+    </div>
+
+    <div class="carrossel" onmouseover="pausarCarrossel()" onmouseout="iniciarCarrossel()">
+      <div class="carrossel-item active">
+        <img src="noticia1.jpg" alt="Notícia 1">
+        <a href="#">Notícia: Lançamento de livro premiado</a>
+      </div>
+      <div class="carrossel-item">
+        <img src="noticia2.jpg" alt="Notícia 2">
+        <a href="#">Entrevista: Autora fala sobre sua obra</a>
+      </div>
+    </div>
+
+    <div class="banner-lateral">
+      <div class="card">
+        <img src="banner-lateral-dir.jpg" alt="Anuncie aqui">
+      </div>
+    </div>
+  </div>
+
+  <!-- MENU DE ABAS -->
+  <nav>
+    <ul id="abasNoticias">
+      <li><a href="#" onclick="mostrarAba('geral')">Notícias Gerais</a></li>
+      <li><a href="#" onclick="mostrarAba('entrevistas')">Entrevistas</a></li>
+      <li><a href="#" onclick="mostrarAba('eventos')">Eventos</a></li>
+      <li><a href="#" onclick="mostrarAba('dicas')">Dicas de Leitura</a></li>
+      <li><a href="#" onclick="mostrarAba('videos')">Vídeos</a></li>
+    </ul>
+  </nav>
+
+  <!-- ABAS DE CONTEÚDO -->
+  <div class="atualizacoes">
+    <!-- Função reutilizável de aba -->
+    <div id="geral" class="aba-noticia"></div>
+    <div id="entrevistas" class="aba-noticia" style="display:none;"></div>
+    <div id="eventos" class="aba-noticia" style="display:none;"></div>
+    <div id="dicas" class="aba-noticia" style="display:none;"></div>
+    <div id="videos" class="aba-noticia" style="display:none;"></div>
+  </div>
+  
+  <!-- RODAPÉ -->
+  <div id="footer"></div>
+
+</div>
+
+<!-- SCRIPTS -->
+<script>
+  const nomesAbas = {
+    geral: "Notícias Gerais",
+    entrevistas: "Entrevistas",
+    eventos: "Eventos",
+    dicas: "Dicas de Leitura",
+    videos: "Vídeos"
+  };
+
+  function mostrarAba(id) {
+    document.querySelectorAll('.aba-noticia').forEach(div => div.style.display = 'none');
+    document.getElementById(id).style.display = 'block';
+
+    document.querySelectorAll('#abasNoticias a').forEach(link => link.classList.remove('active'));
+    const linkAtivo = Array.from(document.querySelectorAll('#abasNoticias a')).find(link => link.getAttribute('onclick')?.includes(id));
+    if (linkAtivo) linkAtivo.classList.add('active');
+  }
+
+  function criarAbas() {
+    for (const aba in nomesAbas) {
+      const container = document.getElementById(aba);
+      const titulo = nomesAbas[aba];
+
+      container.innerHTML = `
+        <h2 class="text-center">${titulo}</h2>
+        <div class="cards-grid">
+          ${Array.from({length: 16}).map((_, i) => `
+            <div class="card">${titulo} ${i + 1}<br><a href="#">Leia mais</a></div>
+          `).join('')}
+        </div>
+
+        <h3 class="text-center" style="margin-top: 2rem;">${titulo} Mais Antigos</h3>
+        <div class="cards-grid" style="grid-template-columns: repeat(2, 1fr);">
+          <ul>
+            <li><a href="#">${titulo} antiga 1</a></li>
+            <li><a href="#">${titulo} antiga 2</a></li>
+            <li><a href="#">${titulo} antiga 3</a></li>
+            <li><a href="#">${titulo} antiga 4</a></li>
+          </ul>
+          <ul>
+            <li><a href="#">${titulo} antiga 5</a></li>
+            <li><a href="#">${titulo} antiga 6</a></li>
+            <li><a href="#">${titulo} antiga 7</a></li>
+            <li><a href="#">${titulo} antiga 8</a></li>
+          </ul>
+        </div>
+
+        <div class="text-center" style="margin-top: 1rem;">
+          <a href="todas-noticias.html" class="topo-btn">Ver Todas as Notícias</a>
+        </div>
+      `;
+    }
+  }
+
+  criarAbas();
+  mostrarAba('geral');
+
+  // Carrossel simples
+  let current = 0;
+  const slides = document.querySelectorAll('.carrossel-item');
+  function mostrarSlide(i) {
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+  }
+  function proximoSlide() {
+    current = (current + 1) % slides.length;
+    mostrarSlide(current);
+  }
+  let intervalo = setInterval(proximoSlide, 5000);
+  function pausarCarrossel() { clearInterval(intervalo); }
+  function iniciarCarrossel() { intervalo = setInterval(proximoSlide, 5000); }
+</script>
+
+<script>
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("header").innerHTML = data);
+
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("footer").innerHTML = data);
+</script>
+
+</body>
+</html>

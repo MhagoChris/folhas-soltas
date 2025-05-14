@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Editor de Conteúdo - Folhas Soltas</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .editor-container {
+      background: #fffef9;
+      padding: 2rem;
+      border: 1px solid #d4af37;
+      border-radius: 6px;
+      margin: 2rem 0;
+    }
+
+    select, input {
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      width: 100%;
+      max-width: 500px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .results {
+      margin-top: 2rem;
+    }
+
+    .item-card {
+      background: #f9f3db;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-left: 4px solid #d4af37;
+      border-radius: 4px;
+    }
+
+    .item-card h4 {
+      margin: 0 0 0.5rem;
+      color: #5e2c2c;
+    }
+
+    .item-card .meta {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    .item-card button {
+      margin-right: 0.5rem;
+      background: #f9d89c;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .item-card button.excluir {
+      background: #d85c5c;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- TOPO PADRÃO -->
+  <div id="header"></div>
+
+  <!-- ÁREA DO EDITOR -->
+  <section class="editor-container">
+    <h2>Editor de Conteúdo</h2>
+
+    <!-- Seletor de tipo -->
+    <label for="tipo-conteudo"><strong>Escolha o tipo de conteúdo:</strong></label>
+    <select id="tipo-conteudo" onchange="carregarConteudo()">
+      <option value="">-- Selecione --</option>
+      <option value="noticias">Notícias</option>
+      <option value="historias">Histórias</option>
+      <option value="livros">Livros</option>
+      <option value="autores">Autores</option>
+      <option value="banners">Banners</option>
+    </select>
+
+    <!-- Campo de busca -->
+    <label for="busca"><strong>Buscar por título ou palavra-chave:</strong></label>
+    <input type="text" id="busca" placeholder="Digite um termo..." oninput="filtrarResultados()">
+
+    <!-- Resultados carregados -->
+    <div class="results" id="resultados"></div>
+  </section>
+
+  <script>
+  let todosItens = [];
+  let tipoAtual = "";
+
+  function carregarConteudo() {
+    const tipo = document.getElementById("tipo-conteudo").value;
+    tipoAtual = tipo;
+    const resultados = document.getElementById("resultados");
+    resultados.innerHTML = "Carregando...";
+
+    if (!tipo) {
+      resultados.innerHTML = "";
+      return;
+    }
+
+    fetch(`${tipo}.json`)
+      .then(res => res.json())
+      .then(data => {
+        todosItens = data;
+        exibirResultados(data);
+      })
+      .catch(err => {
+        resultados.innerHTML = `<p style="color:red;">Erro ao carregar ${tipo}.json</p>`;
+        console.error(err);
+      });
+  }
+
+  function exibirResultados(lista) {
+    const container = document.getElementById("resultados");
+    if (!lista.length) {
+      container.innerHTML = "<p>Nenhum item encontrado.</p>";
+      return;
+    }
+
+    container.innerHTML = "";
+    lista.forEach((item, index) => {
+      const card = document.createElement("div");
+      card.className = "item-card";
+
+      let titulo = item.titulo || item.nome || "Sem título";
+      let meta = item.categoria || item.autor || item.producao || "Conteúdo";
+
+      card.innerHTML = `
+        <h4>${titulo}</h4>
+        <div class="meta">Tipo: ${tipoAtual.charAt(0).toUpperCase() + tipoAtual.slice(1)} | ${meta}</div>
+        <button onclick="editarItem(${index})">Editar</button>
+        <button class="excluir" onclick="excluirItem(${index})">Excluir</button>
+      `;
+
+      container.appendChild(card);
+    });
+  }
+
+  function filtrarResultados() {
+    const termo = document.getElementById("busca").value.toLowerCase();
+    const filtrado = todosItens.filter(item => {
+      const texto = (item.titulo || item.nome || "").toLowerCase();
+      return texto.includes(termo);
+    });
+    exibirResultados(filtrado);
+  }
+</script>
+
+<script>
+  function editarItem(index) {
+    // Redireciona para admin.html com parâmetros (tipo e índice)
+    const tipo = tipoAtual;
+    window.location.href = `admin.html?tipo=${tipo}&id=${index}`;
+  }
+
+  function excluirItem(index) {
+    if (!confirm("Tem certeza que deseja excluir este item?")) return;
+
+    todosItens.splice(index, 1);
+    exibirResultados(todosItens);
+
+    // TODO: Enviar novo array atualizado para o backend (simulação)
+    fetch(`/salvar/${tipoAtual}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(todosItens)
+    })
+    .then(res => res.text())
+    .then(msg => {
+      console.log("Item excluído com sucesso.");
+    })
+    .catch(err => {
+      console.error("Erro ao salvar alterações:", err);
+    });
+  }
+</script>
+
+<!-- RODAPÉ PADRÃO -->
+<div id="footer"></div>
+
+</div> <!-- Fecha .container -->
+
+<script>
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("header").innerHTML = data);
+
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("footer").innerHTML = data);
+</script>
+
+</body>
+</html>

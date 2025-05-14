@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Luz do Vale - Folhas Soltas</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .pagina-livro {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      margin-top: 2rem;
+    }
+
+    .espaco-lateral {
+      width: 10%;
+    }
+
+    .conteudo-livro {
+      width: 80%;
+    }
+
+    .livro-info {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+    }
+
+    .capa-livro {
+      width: 180px;
+      aspect-ratio: 3 / 4;
+      flex-shrink: 0;
+    }
+
+    .capa-livro img {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+
+    .livro-detalhes h2 {
+      font-size: 2rem;
+      color: #5e2c2c;
+      margin-bottom: 0.5rem;
+    }
+
+    .livro-detalhes h4 {
+      color: #3b2f2f;
+      font-weight: normal;
+      margin-top: -0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .livro-detalhes p {
+      margin-bottom: 1rem;
+    }
+
+    .btn-compra {
+      display: inline-block;
+      background-color: #f9d89c;
+      color: #5e2c2c;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- TOPO PADRÃO -->
+  <div id="header"></div>
+
+  <!-- CONTEÚDO DO LIVRO -->
+  <section class="pagina-livro">
+    <div class="espaco-lateral">
+      <div class="card" style="height: 300px; background-color: #f9d89c; text-align: center;">
+        Anúncio<br>Lateral
+      </div>
+    </div>
+
+    <div class="conteudo-livro">
+      <div class="livro-info">
+        <div class="capa-livro">
+          <img src="livros/luz-do-vale.jpg" alt="Luz do Vale - capa">
+        </div>
+        <div class="livro-detalhes">
+          <h2>Luz do Vale</h2>
+          <h4>Fernanda Albuquerque · 2023</h4>
+          <p><strong>Sinopse:</strong> Uma jornada poética por paisagens interiores e lembranças esquecidas.
+            Luz do Vale é um convite à contemplação, ao reencontro com a memória e à descoberta do silêncio
+            como refúgio. Uma narrativa sensível que costura o passado e o presente com lirismo.</p>
+
+          <a href="#" class="btn-compra">Comprar Agora</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="espaco-lateral">
+      <div class="card" style="height: 300px; background-color: #f9d89c; text-align: center;">
+        Anúncio<br>Lateral
+      </div>
+    </div>
+  </section>
+  
+  <!-- RODAPÉ -->
+  <div id="footer"></div>
+
+</div>
+
+<script>
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("header").innerHTML = data);
+
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("footer").innerHTML = data);
+</script>
+
+</body>
+</html>
