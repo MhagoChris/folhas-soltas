@@ -179,5 +179,48 @@
     .then(data => document.getElementById("footer").innerHTML = data);
 </script>
 
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const historiaId = params.get("id");
+  const capNum = parseInt(params.get("capitulo"));
+
+  fetch('/dados/historias')
+    .then(res => res.json())
+    .then(historias => {
+      const historia = historias.find(h => h.id === historiaId);
+      if (!historia) {
+        document.getElementById("conteudo-historia").innerHTML = "<p>História não encontrada.</p>";
+        return;
+      }
+
+      const capitulo = historia.capitulos.find(c => c.numero === capNum);
+      if (!capitulo) {
+        document.getElementById("conteudo-historia").innerHTML = "<p>Capítulo não encontrado.</p>";
+        return;
+      }
+
+      const div = document.getElementById("conteudo-historia");
+      div.innerHTML = `
+        <h1>${historia.titulo}</h1>
+        <h2>Capítulo ${capitulo.numero}: ${capitulo.titulo}</h2>
+        <p>${capitulo.conteudo.replace(/\n/g, '<br>')}</p>
+      `;
+
+      // Navegação
+      const nav = document.createElement("div");
+      nav.style.marginTop = "2rem";
+
+      if (capNum > 1) {
+        nav.innerHTML += `<a href="historia.html?id=${historiaId}&capitulo=${capNum - 1}">← Capítulo anterior</a>`;
+      }
+
+      if (capNum < historia.capitulos.length) {
+        nav.innerHTML += ` &nbsp;&nbsp; <a href="historia.html?id=${historiaId}&capitulo=${capNum + 1}">Próximo capítulo →</a>`;
+      }
+
+      div.appendChild(nav);
+    });
+</script>
+
 </body>
 </html>
