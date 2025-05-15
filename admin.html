@@ -76,12 +76,13 @@
 </head>
 <body>
 <div class="container">
-
-  <div id="header"></div>
-
+  
   <!-- PAINEL ADMINISTRATIVO -->
   <section class="admin-container">
     <h2 class="text-center">Painel de Administração</h2>
+    <div style="text-align: center; margin-top: 1rem;">
+      <a href="editor.html" style="background-color:#d4af37;color:#fff;padding:0.5rem 1.2rem;border-radius:6px;font-weight:bold;text-decoration:none;">🔧 Ir para Editor</a>
+    </div>
 
     <!-- Estatísticas -->
     <div class="estatisticas-box" id="estatisticas">
@@ -109,7 +110,7 @@
 <!-- Seção: HISTÓRIAS -->
 <section id="historias" class="form-section">
   <h3>Cadastro de História (Obra)</h3>
-
+  
   <label>Título da História:</label>
   <input type="text" id="historia-titulo">
 
@@ -369,9 +370,7 @@
     </section>
 
   </section> <!-- FIM ADMIN CONTAINER -->
-  
-  <!-- RODAPÉ -->
-  <div id="footer"></div>
+    
 </div>
 
 <!-- SCRIPTS GERAIS -->
@@ -557,6 +556,8 @@
     const imagemInput = document.getElementById("historia-imagem");
     const imagem = imagemInput?.files[0]?.name || "";
 
+    await garantirAutorExistente(autor); // ✅ ESTA LINHA GARANTE QUE O AUTOR EXISTA
+
     if (!titulo || !autor || !sinopse) {
       alert("Preencha todos os campos obrigatórios.");
       return;
@@ -570,7 +571,7 @@
       imagem,
       capitulos: []
     };
-
+    
     try {
       const res = await fetch("historias.json");
       const historias = await res.json();
@@ -594,6 +595,35 @@
     } catch (err) {
       alert("Erro ao salvar história.");
       console.error(err);
+    }
+  }
+
+  async function garantirAutorExistente(nomeAutor) {
+    try {
+      const res = await fetch("autores.json");
+      const autores = await res.json();
+
+      const existe = autores.find(a => a.nome.toLowerCase() === nomeAutor.toLowerCase());
+      if (existe) return;
+
+      const novoAutor = {
+        id: Date.now().toString(),
+        nome: nomeAutor,
+        bio: "",
+        foto: ""
+      };
+
+      autores.push(novoAutor);
+
+      await fetch("/salvar/autores", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(autores)
+      });
+
+      console.log(`✅ Autor "${nomeAutor}" adicionado automaticamente.`);
+    } catch (err) {
+      console.error("Erro ao garantir autor:", err);
     }
   }
 
@@ -667,16 +697,6 @@
 
   // Carregar histórias assim que abrir admin
   window.addEventListener("DOMContentLoaded", carregarHistoriasNoSelect);
-</script>
-
-<script>
-  fetch("header.html")
-    .then(res => res.text())
-    .then(data => document.getElementById("header").innerHTML = data);
-
-  fetch("footer.html")
-    .then(res => res.text())
-    .then(data => document.getElementById("footer").innerHTML = data);
 </script>
 
 </body>
