@@ -7,696 +7,264 @@
   <link rel="stylesheet" href="style.css" />
   <style>
     body {
-      background-color: #fffef9;
-      font-family: Georgia, serif;
-    }
-
-    .admin-container {
-      margin: 2rem 0;
-      background-color: #fffef9;
+      background: #fffef9;
       padding: 2rem;
-      border: 1px solid #d4af37;
-      border-radius: 6px;
+      font-family: Arial, sans-serif;
     }
 
-    h2, h3 {
+    h2 {
       color: #5e2c2c;
-      margin-bottom: 1rem;
+      margin-top: 2rem;
     }
 
-    select, input, textarea, button {
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    input, textarea, select {
       width: 100%;
+      max-width: 500px;
       padding: 0.5rem;
       margin-top: 0.3rem;
       border: 1px solid #ccc;
       border-radius: 4px;
-      box-sizing: border-box;
     }
 
     button {
+      margin-top: 1rem;
+      background: #d4af37;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .section {
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .top-nav {
+      text-align: right;
+      margin-bottom: 1rem;
+    }
+
+    .top-nav a {
       background-color: #f9d89c;
       color: #5e2c2c;
-      font-weight: bold;
-      margin-top: 1rem;
-      cursor: pointer;
-      border: none;
-    }
-
-    .form-section {
-      display: none;
-      margin-top: 2rem;
-      padding: 1.5rem;
-      border: 1px solid #d4af37;
-      border-radius: 6px;
-      background-color: #fdf6e9;
-    }
-
-    .estatisticas-box {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 1rem;
-      margin-top: 2rem;
-      background-color: #fffef2;
-      padding: 1rem;
-      border: 1px dashed #d4af37;
+      padding: 0.5rem 1rem;
       border-radius: 4px;
-    }
-
-    .estat-item {
-      background: #f9f3db;
-      border-left: 5px solid #d4af37;
-      padding: 1rem;
+      text-decoration: none;
       font-weight: bold;
-    }
-
-    .oculto {
-      display: none;
     }
   </style>
 </head>
 <body>
-<div class="container">
-  
-  <!-- PAINEL ADMINISTRATIVO -->
-  <section class="admin-container">
-    <h2 class="text-center">Painel de Administração</h2>
-    <div style="text-align: center; margin-top: 1rem;">
-      <a href="editor.html" style="background-color:#d4af37;color:#fff;padding:0.5rem 1.2rem;border-radius:6px;font-weight:bold;text-decoration:none;">🔧 Ir para Editor</a>
-    </div>
 
-    <!-- Estatísticas -->
-    <div class="estatisticas-box" id="estatisticas">
-      <div class="estat-item">📚 Histórias: <span id="count-historias">...</span></div>
-      <div class="estat-item">📰 Notícias: <span id="count-noticias">...</span></div>
-      <div class="estat-item">👥 Autores: <span id="count-autores">...</span></div>
-      <div class="estat-item">📕 Livros: <span id="count-livros">...</span></div>
-      <div class="estat-item">📢 Banners: <span id="count-banners">...</span></div>
-    </div>
-
-    <!-- Menu de Seções -->
-    <label for="seletor" style="margin-top:2rem;"><strong>Escolha uma seção para gerenciar:</strong></label>
-    <select id="seletor" onchange="mostrarSecao()">
-      <option value="">-- Escolher --</option>
-      <option value="historias">Histórias</option>
-      <option value="noticias">Notícias</option>
-      <option value="livros">Livros</option>
-      <option value="autores">Autores</option>
-      <option value="sobre">Sobre o Site</option>
-      <option value="banners">Banners</option>
-    </select>
-
-    <!-- INÍCIO DOS FORMULÁRIOS -->
-
-<!-- Seção: HISTÓRIAS -->
-<section id="historias" class="form-section">
-  <h3>Cadastro de História (Obra)</h3>
-  
-  <label>Título da História:</label>
-  <input type="text" id="historia-titulo">
-
-  <label>Autor:</label>
-  <input type="text" id="historia-autor">
-
-  <label>Sinopse:</label>
-  <textarea id="historia-sinopse" rows="4"></textarea>
-
-  <label>Imagem da História (capa):</label>
-  <input type="file" id="historia-imagem">
-
-  <button onclick="salvarHistoria()">Salvar História</button>
-
-  <hr>
-
-  <h3>Adicionar Capítulo à História</h3>
-
-  <label>Selecionar História:</label>
-  <select id="selecionar-historia">
-    <option value="">-- Escolha uma história --</option>
-  </select>
-
-  <label>Número do Capítulo:</label>
-  <input type="number" id="capitulo-numero" min="1">
-
-  <label>Título do Capítulo:</label>
-  <input type="text" id="capitulo-titulo">
-
-  <label>Conteúdo do Capítulo:</label>
-  <textarea id="capitulo-conteudo" rows="6"></textarea>
-
-  <button onclick="salvarCapitulo()">Salvar Capítulo</button>
-</section>
-
-
-        <!-- FORMULÁRIO DE NOTÍCIAS -->
-    <section id="noticias" class="form-section">
-      <h3>Cadastro de Notícias</h3>
-
-      <label for="categoria-noticia">Categoria:</label>
-      <select id="categoria-noticia" onchange="exibirCamposCategoria()">
-        <option value="">-- Selecione --</option>
-        <option value="geral">Notícia Geral</option>
-        <option value="entrevista">Entrevista</option>
-        <option value="evento">Evento</option>
-        <option value="dica">Dica de Leitura</option>
-        <option value="video">Vídeo</option>
-      </select>
-
-      <!-- Comum: título -->
-      <div id="campo-titulo">
-        <label>Título:</label>
-        <input type="text">
-      </div>
-
-      <!-- Comum: chamada -->
-      <div id="campo-chamada">
-        <label>Chamada:</label>
-        <textarea rows="2"></textarea>
-      </div>
-
-      <!-- Comum: texto -->
-      <div id="campo-texto">
-        <label>Texto:</label>
-        <textarea rows="6"></textarea>
-      </div>
-
-      <!-- Comum: fonte -->
-      <div id="campo-fonte">
-        <label>Fonte:</label>
-        <input type="text">
-      </div>
-
-      <!-- Comum: imagem -->
-      <div id="campo-imagem">
-        <label>Imagem da Notícia:</label>
-        <input type="file">
-      </div>
-
-      <!-- EVENTO -->
-      <div id="evento-campos" class="oculto">
-        <label>Organização/Produção:</label>
-        <input type="text">
-        <label>Local:</label>
-        <input type="text">
-        <label>Descrição do Evento:</label>
-        <textarea rows="4"></textarea>
-        <label>Imagem:</label>
-        <input type="file">
-      </div>
-
-      <!-- VÍDEO -->
-      <div id="video-campos" class="oculto">
-        <label>Canal / Produção:</label>
-        <input type="text">
-        <label>Descrição:</label>
-        <textarea rows="3"></textarea>
-        <label>Link ou Upload:</label>
-        <input type="url">
-        <label>Capa do Vídeo:</label>
-        <input type="file">
-      </div>
-
-      <label>
-        <input type="checkbox"> Destaque no carrossel
-      </label>
-
-      <button onclick="salvarNotícia()">Salvar</button>
-    </section>
-
-    <script>
-      function exibirCamposCategoria() {
-        const categoria = document.getElementById('categoria-noticia').value;
-
-        // Ocultar todos os campos especiais
-        document.getElementById('evento-campos').classList.add('oculto');
-        document.getElementById('video-campos').classList.add('oculto');
-        document.getElementById('campo-chamada').classList.remove('oculto');
-        document.getElementById('campo-texto').classList.remove('oculto');
-        document.getElementById('campo-fonte').classList.remove('oculto');
-        document.getElementById('campo-imagem').classList.remove('oculto');
-
-        if (categoria === 'evento') {
-          document.getElementById('campo-chamada').classList.add('oculto');
-          document.getElementById('campo-texto').classList.add('oculto');
-          document.getElementById('campo-fonte').classList.add('oculto');
-          document.getElementById('campo-imagem').classList.add('oculto');
-          document.getElementById('evento-campos').classList.remove('oculto');
-        } else if (categoria === 'video') {
-          document.getElementById('campo-chamada').classList.add('oculto');
-          document.getElementById('campo-texto').classList.add('oculto');
-          document.getElementById('campo-fonte').classList.add('oculto');
-          document.getElementById('campo-imagem').classList.add('oculto');
-          document.getElementById('video-campos').classList.remove('oculto');
-        }
-      }
-    </script>
-
-        <!-- AUTORES -->
-    <section id="autores" class="form-section">
-      <h3>Cadastro de Autores</h3>
-      <label>Nome:</label>
-      <input type="text">
-      <label>Biografia:</label>
-      <textarea rows="4"></textarea>
-      <label>Foto:</label>
-      <input type="file">
-      <button onclick="salvarAutor()">Salvar</button>
-    </section>
-
-    <!-- LIVROS -->
-    <section id="livros" class="form-section">
-      <h3>Cadastro de Livros</h3>
-      <label>Título:</label>
-      <input type="text">
-      <label>Autor:</label>
-      <input type="text">
-      <label>Sinopse:</label>
-      <textarea rows="4"></textarea>
-      <label>Capa:</label>
-      <input type="file">
-      <label>Link de Compra:</label>
-      <input type="url">
-      <label>Destaque no site: <input type="checkbox"></label>
-      <button onclick="salvarLivro()">Salvar</button>
-    </section>
-
-    <!-- SOBRE O SITE / EQUIPE -->
-    <section id="sobre" class="form-section">
-      <h3>Sobre o Site / Equipe</h3>
-      <label>Texto Institucional:</label>
-      <textarea rows="4"></textarea>
-
-      <h4>Diretor Geral</h4>
-      <label>Nome:</label>
-      <input type="text" value="Cristiano José Pinto">
-      <label>Biografia:</label>
-      <textarea rows="3"></textarea>
-
-      <h4>Editor</h4>
-      <label>Nome:</label>
-      <input type="text">
-      <label>Biografia:</label>
-      <textarea rows="3"></textarea>
-
-      <h4>Redação (múltiplos)</h4>
-      <div id="redatores-container">
-        <div class="redator-item">
-          <label>Nome:</label>
-          <input type="text">
-          <label>Biografia:</label>
-          <textarea rows="3"></textarea>
-        </div>
-      </div>
-      <button type="button" onclick="adicionarRedator()">Adicionar Redator</button>
-
-      <button onclick="salvarAlterações()">Salvar</button>
-    </section>
-
-    <script>
-      function adicionarRedator() {
-        const container = document.getElementById('redatores-container');
-        const novo = document.createElement('div');
-        novo.classList.add('redator-item');
-        novo.innerHTML = `
-          <label>Nome:</label>
-          <input type="text">
-          <label>Biografia:</label>
-          <textarea rows="3"></textarea>
-        `;
-        container.appendChild(novo);
-      }
-    </script>
-
-    <!-- BANNERS -->
-    <section id="banners" class="form-section">
-      <h3>Cadastro de Banners</h3>
-      <label>Imagem do Banner:</label>
-      <input type="file">
-      <label>Link do Anunciante:</label>
-      <input type="url">
-      <label>Local de Exibição:</label>
-      <select>
-        <optgroup label="Global">
-          <option value="master">Banner Master</option>
-          <option value="rodape">Rodapé</option>
-        </optgroup>
-        <optgroup label="Início">
-          <option value="inicio-lateral-esq">Lateral Esquerda</option>
-          <option value="inicio-lateral-dir">Lateral Direita</option>
-          <option value="inicio-entre-cards">Entre Cards</option>
-        </optgroup>
-        <optgroup label="Histórias">
-          <option value="historias-lateral-esq">Lateral Esquerda</option>
-          <option value="historias-lateral-dir">Lateral Direita</option>
-        </optgroup>
-        <optgroup label="Notícias">
-          <option value="noticias-lateral-esq">Lateral Esquerda</option>
-          <option value="noticias-lateral-dir">Lateral Direita</option>
-        </optgroup>
-        <optgroup label="Autores">
-          <option value="autores-lateral-esq">Lateral Esquerda</option>
-          <option value="autores-lateral-dir">Lateral Direita</option>
-        </optgroup>
-        <optgroup label="Loja">
-          <option value="loja-lateral-esq">Lateral Esquerda</option>
-          <option value="loja-lateral-dir">Lateral Direita</option>
-        </optgroup>
-      </select>
-      <label>Tipo:</label>
-      <select>
-        <option value="parado">Parado</option>
-        <option value="animado">Animado</option>
-      </select>
-      <button onclick="salvarBanner()">Salvar</button>
-    </section>
-
-  </section> <!-- FIM ADMIN CONTAINER -->
-    
+<div class="top-nav">
+  <a href="editor.html">🔧 Abrir Editor</a>
 </div>
 
-<!-- SCRIPTS GERAIS -->
+<h1>Administração do Site</h1>
+
+<!-- AUTORES -->
+<section class="section">
+  <h2>Cadastrar Autor</h2>
+  <label for="autor-nome">Nome do Autor</label>
+  <input type="text" id="autor-nome" />
+
+  <label for="autor-foto">Foto (nome do arquivo)</label>
+  <input type="text" id="autor-foto" />
+
+  <label for="autor-bio">Biografia</label>
+  <textarea id="autor-bio" rows="4"></textarea>
+
+  <button onclick="salvarAutor()">Salvar Autor</button>
+</section>
+
+<!-- HISTÓRIAS -->
+<section class="section">
+  <h2>Cadastrar História</h2>
+  <label for="historia-titulo">Título</label>
+  <input type="text" id="historia-titulo" />
+
+  <label for="historia-autor">Autor</label>
+  <input type="text" id="historia-autor" />
+
+  <label for="historia-sinopse">Sinopse</label>
+  <textarea id="historia-sinopse" rows="3"></textarea>
+
+  <label for="historia-imagem">Imagem (nome do arquivo)</label>
+  <input type="text" id="historia-imagem" />
+
+  <button onclick="salvarHistoria()">Salvar História</button>
+</section>
+
+<!-- LIVROS -->
+<section class="section">
+  <h2>Cadastrar Livro</h2>
+  <label for="livro-titulo">Título</label>
+  <input type="text" id="livro-titulo" />
+
+  <label for="livro-autor">Autor</label>
+  <input type="text" id="livro-autor" />
+
+  <label for="livro-descricao">Descrição</label>
+  <textarea id="livro-descricao" rows="3"></textarea>
+
+  <label for="livro-capa">Capa (nome do arquivo)</label>
+  <input type="text" id="livro-capa" />
+
+  <button onclick="salvarLivro()">Salvar Livro</button>
+</section>
+
+<!-- NOTÍCIAS -->
+<section class="section">
+  <h2>Cadastrar Notícia</h2>
+  <label for="noticia-titulo">Título</label>
+  <input type="text" id="noticia-titulo" />
+
+  <label for="noticia-categoria">Categoria</label>
+  <select id="noticia-categoria">
+    <option value="geral">Geral</option>
+    <option value="entrevistas">Entrevistas</option>
+    <option value="eventos">Eventos</option>
+    <option value="dicas">Dicas de Leitura</option>
+    <option value="videos">Vídeos</option>
+  </select>
+
+  <label for="noticia-conteudo">Conteúdo</label>
+  <textarea id="noticia-conteudo" rows="4"></textarea>
+
+  <label for="noticia-imagem">Imagem (nome do arquivo)</label>
+  <input type="text" id="noticia-imagem" />
+
+  <button onclick="salvarNoticia()">Salvar Notícia</button>
+</section>
+
+<!-- SCRIPTS -->
 <script>
-  function mostrarSecao() {
-    const valor = document.getElementById('seletor').value;
-    document.querySelectorAll('.form-section').forEach(secao => {
-      secao.style.display = 'none';
-    });
-    if (valor) {
-      document.getElementById(valor).style.display = 'block';
-      window.scrollTo({ top: document.getElementById(valor).offsetTop - 40, behavior: 'smooth' });
-    }
+async function salvarAutor() {
+  const nome = document.getElementById("autor-nome").value.trim();
+  const foto = document.getElementById("autor-foto").value.trim();
+  const bio = document.getElementById("autor-bio").value.trim();
+
+  const res = await fetch("autores.json");
+  const autores = await res.json();
+
+  const existe = autores.find(a => a.nome.toLowerCase() === nome.toLowerCase());
+  if (existe) {
+    alert("Este autor já está cadastrado.");
+    return;
   }
 
-  function carregarContadores() {
-    const arquivos = {
-      historias: 'historias.json',
-      noticias: 'noticias.json',
-      autores: 'autores.json',
-      livros: 'livros.json',
-      banners: 'banners.json'
-    };
+  const novo = { id: Date.now().toString(), nome, foto, bio };
+  autores.push(novo);
 
-    for (const tipo in arquivos) {
-      fetch(arquivos[tipo])
-        .then(res => res.json())
-        .then(dados => {
-          document.getElementById(`count-${tipo}`).textContent = dados.length || 0;
-        })
-        .catch(() => {
-          document.getElementById(`count-${tipo}`).textContent = '0';
-        });
-    }
-  }
-
-  carregarContadores();
-</script>
-
-<script>
-  async function salvarItemEditado() {
-    const params = new URLSearchParams(window.location.search);
-    const tipo = params.get("tipo");
-    const id = parseInt(params.get("id"));
-
-    if (!tipo || isNaN(id)) {
-      alert("⚠️ Você está tentando salvar sem editar um item existente.");
-      return;
-    }
-
-    const jsonURL = `${tipo}.json`;
-
-    try {
-      const response = await fetch(jsonURL);
-      const dados = await response.json();
-
-      let itemEditado = dados[id];
-
-      if (!itemEditado) {
-        alert("⚠️ Item não encontrado para editar.");
-        return;
-      }
-
-      // Atualizar os campos com base no tipo
-      if (tipo === "noticias") {
-        itemEditado.titulo = document.querySelector('#noticias input[type="text"]').value || "";
-        itemEditado.categoria = document.getElementById("categoria-noticia").value;
-        itemEditado.destaque = document.querySelector('#noticias input[type="checkbox"]').checked;
-
-        if (itemEditado.categoria === "video") {
-          itemEditado.canal = document.querySelector('#video-campos input[type="text"]').value;
-          itemEditado.descricao = document.querySelector('#video-campos textarea').value;
-          itemEditado.url = document.querySelector('#video-campos input[type="url"]').value;
-        } else if (itemEditado.categoria === "evento") {
-          const campos = document.querySelectorAll('#evento-campos input, #evento-campos textarea');
-          itemEditado.producao = campos[0].value;
-          itemEditado.local = campos[1].value;
-          itemEditado.descricao = campos[2].value;
-        } else {
-          itemEditado.chamada = document.querySelector('#campo-chamada textarea')?.value || "";
-          itemEditado.texto = document.querySelector('#campo-texto textarea')?.value || "";
-          itemEditado.fonte = document.querySelector('#campo-fonte input')?.value || "";
-        }
-      }
-
-      else if (tipo === "historias") {
-        const campos = document.querySelectorAll('#historias input, #historias textarea');
-        itemEditado.autor = campos[0].value;
-        itemEditado.titulo = campos[1].value;
-        itemEditado.capitulo = campos[2].value;
-        itemEditado.conteudo = campos[3].value;
-      }
-
-      else if (tipo === "livros") {
-        const campos = document.querySelectorAll('#livros input, #livros textarea');
-        itemEditado.titulo = campos[0].value;
-        itemEditado.autor = campos[1].value;
-        itemEditado.sinopse = campos[2].value;
-        itemEditado.link = campos[4].value;
-        itemEditado.destaque = campos[5].checked;
-      }
-
-      else if (tipo === "autores") {
-        const campos = document.querySelectorAll('#autores input, #autores textarea');
-        itemEditado.nome = campos[0].value;
-        itemEditado.bio = campos[1].value;
-      }
-
-      // Agora salva o novo array no backend
-      const saveResponse = await fetch(`/salvar/${tipo}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dados)
-      });
-
-      if (saveResponse.ok) {
-        alert("✅ Alterações salvas com sucesso!");
-        window.location.href = "editor.html";
-      } else {
-        alert("❌ Erro ao salvar alterações.");
-      }
-
-    } catch (err) {
-      console.error(err);
-      alert("❌ Ocorreu um erro ao salvar.");
-    }
-  }
-</script>
-
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const params = new URLSearchParams(window.location.search);
-    const tipo = params.get("tipo");
-    const id = parseInt(params.get("id"));
-
-    if (tipo && !isNaN(id)) {
-      document.getElementById("seletor").value = tipo;
-      mostrarSecao();
-
-      fetch(`${tipo}.json`)
-        .then(res => res.json())
-        .then(dados => {
-          const item = dados[id];
-          if (!item) return;
-
-          // Preenche campos básicos por tipo
-          if (tipo === "noticias") {
-            document.querySelector('#noticias input[type="text"]').value = item.titulo || "";
-            document.getElementById("categoria-noticia").value = item.categoria || "";
-            exibirCamposCategoria();
-
-            document.querySelector('#campo-chamada textarea').value = item.chamada || "";
-            document.querySelector('#campo-texto textarea').value = item.texto || "";
-            document.querySelector('#campo-fonte input').value = item.fonte || "";
-
-            if (item.categoria === "video") {
-              document.querySelector('#video-campos input[type="text"]').value = item.canal || "";
-              document.querySelector('#video-campos textarea').value = item.descricao || "";
-              document.querySelector('#video-campos input[type="url"]').value = item.url || "";
-            }
-
-            if (item.categoria === "evento") {
-              const campos = document.querySelectorAll('#evento-campos input, #evento-campos textarea');
-              campos[0].value = item.producao || "";
-              campos[1].value = item.local || "";
-              campos[2].value = item.descricao || "";
-            }
-
-            document.querySelector('#noticias input[type="checkbox"]').checked = !!item.destaque;
-          }
-
-          // Outros tipos (ex: historias, livros, autores) podem ser adicionados aqui
-        });
-    }
+  await fetch("/salvar/autores", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(autores)
   });
-</script>
 
-<script>
-  async function salvarHistoria() {
-    const titulo = document.getElementById("historia-titulo").value.trim();
-    const autor = document.getElementById("historia-autor").value.trim();
-    const sinopse = document.getElementById("historia-sinopse").value.trim();
-    const imagemInput = document.getElementById("historia-imagem");
-    const imagem = imagemInput?.files[0]?.name || "";
+  alert("Autor salvo com sucesso!");
+}
 
-    await garantirAutorExistente(autor); // ✅ ESTA LINHA GARANTE QUE O AUTOR EXISTA
+async function salvarHistoria() {
+  const titulo = document.getElementById("historia-titulo").value.trim();
+  const autor = document.getElementById("historia-autor").value.trim();
+  const sinopse = document.getElementById("historia-sinopse").value.trim();
+  const imagem = document.getElementById("historia-imagem").value.trim();
 
-    if (!titulo || !autor || !sinopse) {
-      alert("Preencha todos os campos obrigatórios.");
-      return;
-    }
+  // Garante que o autor exista no autores.json
+  await garantirAutorExistente(autor);
 
-    const novaHistoria = {
-      id: Date.now().toString(), // ID único com timestamp
-      titulo,
-      autor,
-      sinopse,
-      imagem,
-      capitulos: []
-    };
-    
-    try {
-      const res = await fetch("historias.json");
-      const historias = await res.json();
+  const res = await fetch("historias.json");
+  const historias = await res.json();
 
-      historias.push(novaHistoria);
+  const nova = { id: Date.now().toString(), titulo, autor, sinopse, imagem };
+  historias.push(nova);
 
-      await fetch("/salvar/historias", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(historias)
-      });
+  await fetch("/salvar/historias", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(historias)
+  });
 
-      alert("✅ História cadastrada com sucesso!");
-      document.getElementById("historia-titulo").value = "";
-      document.getElementById("historia-autor").value = "";
-      document.getElementById("historia-sinopse").value = "";
-      document.getElementById("historia-imagem").value = "";
+  alert("História salva com sucesso!");
+}
 
-      carregarHistoriasNoSelect();
+async function salvarLivro() {
+  const titulo = document.getElementById("livro-titulo").value.trim();
+  const autor = document.getElementById("livro-autor").value.trim();
+  const descricao = document.getElementById("livro-descricao").value.trim();
+  const capa = document.getElementById("livro-capa").value.trim();
 
-    } catch (err) {
-      alert("Erro ao salvar história.");
-      console.error(err);
-    }
-  }
+  const res = await fetch("livros.json");
+  const livros = await res.json();
 
-  async function garantirAutorExistente(nomeAutor) {
-    try {
-      const res = await fetch("autores.json");
-      const autores = await res.json();
+  const novo = { id: Date.now().toString(), titulo, autor, descricao, capa };
+  livros.push(novo);
 
-      const existe = autores.find(a => a.nome.toLowerCase() === nomeAutor.toLowerCase());
-      if (existe) return;
+  await fetch("/salvar/livros", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(livros)
+  });
 
-      const novoAutor = {
-        id: Date.now().toString(),
-        nome: nomeAutor,
-        bio: "",
-        foto: ""
-      };
+  alert("Livro salvo com sucesso!");
+}
 
-      autores.push(novoAutor);
+async function salvarNoticia() {
+  const titulo = document.getElementById("noticia-titulo").value.trim();
+  const categoria = document.getElementById("noticia-categoria").value.trim();
+  const conteudo = document.getElementById("noticia-conteudo").value.trim();
+  const imagem = document.getElementById("noticia-imagem").value.trim();
 
-      await fetch("/salvar/autores", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(autores)
-      });
+  const res = await fetch("noticias.json");
+  const noticias = await res.json();
 
-      console.log(`✅ Autor "${nomeAutor}" adicionado automaticamente.`);
-    } catch (err) {
-      console.error("Erro ao garantir autor:", err);
-    }
-  }
+  const nova = { id: Date.now().toString(), titulo, categoria, conteudo, imagem };
+  noticias.push(nova);
 
-  async function carregarHistoriasNoSelect() {
-    const select = document.getElementById("selecionar-historia");
-    select.innerHTML = `<option value="">-- Escolha uma história --</option>`;
+  await fetch("/salvar/noticias", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(noticias)
+  });
 
-    try {
-      const res = await fetch("historias.json");
-      const historias = await res.json();
+  alert("Notícia salva com sucesso!");
+}
 
-      historias.forEach(h => {
-        const option = document.createElement("option");
-        option.value = h.id;
-        option.textContent = `${h.titulo} - ${h.autor}`;
-        select.appendChild(option);
-      });
-    } catch (err) {
-      console.error("Erro ao carregar histórias:", err);
-    }
-  }
+async function garantirAutorExistente(nomeAutor) {
+  const res = await fetch("autores.json");
+  const autores = await res.json();
 
-  async function salvarCapitulo() {
-    const historiaId = document.getElementById("selecionar-historia").value;
-    const numero = parseInt(document.getElementById("capitulo-numero").value);
-    const titulo = document.getElementById("capitulo-titulo").value.trim();
-    const conteudo = document.getElementById("capitulo-conteudo").value.trim();
+  const existe = autores.find(a => a.nome.toLowerCase() === nomeAutor.toLowerCase());
+  if (existe) return;
 
-    if (!historiaId || !numero || !titulo || !conteudo) {
-      alert("Preencha todos os campos do capítulo.");
-      return;
-    }
+  const novoAutor = {
+    id: Date.now().toString(),
+    nome: nomeAutor,
+    foto: "",
+    bio: ""
+  };
 
-    try {
-      const res = await fetch("historias.json");
-      const historias = await res.json();
-      const index = historias.findIndex(h => h.id === historiaId);
+  autores.push(novoAutor);
 
-      if (index === -1) {
-        alert("História não encontrada.");
-        return;
-      }
+  await fetch("/salvar/autores", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(autores)
+  });
 
-      historias[index].capitulos = historias[index].capitulos || [];
-
-      // Evita duplicação de capítulo com mesmo número
-      const existe = historias[index].capitulos.some(c => c.numero === numero);
-      if (existe) {
-        alert("Já existe um capítulo com esse número.");
-        return;
-      }
-
-      historias[index].capitulos.push({ numero, titulo, conteudo });
-
-      await fetch("/salvar/historias", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(historias)
-      });
-
-      alert("✅ Capítulo adicionado!");
-      document.getElementById("capitulo-numero").value = "";
-      document.getElementById("capitulo-titulo").value = "";
-      document.getElementById("capitulo-conteudo").value = "";
-
-    } catch (err) {
-      alert("Erro ao salvar capítulo.");
-      console.error(err);
-    }
-  }
-
-  // Carregar histórias assim que abrir admin
-  window.addEventListener("DOMContentLoaded", carregarHistoriasNoSelect);
+  console.log(`Autor "${nomeAutor}" criado automaticamente.`);
+}
 </script>
 
 </body>
