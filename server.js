@@ -104,6 +104,11 @@ app.get('/todas-noticias.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'todas-noticias.html'));
 });
 
+// Seção Livraria
+app.get('/livraria.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'livraria.html'));
+});
+
 // Seção Contato
 app.get('/contato.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'contato.html'));

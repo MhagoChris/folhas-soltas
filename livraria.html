@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Livraria - Folhas Soltas</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .busca-livraria {
+      margin: 2rem 0;
+    }
+
+    .busca-livraria input {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .secao-livraria {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .espaco-lateral {
+      width: 10%;
+    }
+
+    .lista-livros {
+      width: 80%;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .card {
+      text-align: center;
+      background-color: #fffef9;
+      border: 1px solid #d4af37;
+      padding: 1rem;
+      border-radius: 6px;
+    }
+
+    .card img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+    }
+
+    .card strong {
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .card a {
+      display: inline-block;
+      margin-top: 0.3rem;
+      background-color: #f9d89c;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #5e2c2c;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- TOPO PADRÃO -->
+  <div id="header"></div>
+
+  <!-- BARRA DE PESQUISA -->
+  <section class="busca-livraria">
+    <input type="text" id="buscaInput" placeholder="Buscar por título ou autor..." oninput="filtrarLivros()">
+  </section>
+
+  <!-- LISTA DE LIVROS -->
+  <section class="secao-livraria">
+    <div class="espaco-lateral">
+      <div class="card" style="height: 300px; background-color: #f9d89c; text-align: center;">
+        Anúncio<br>Lateral
+      </div>
+    </div>
+
+    <div class="lista-livros">
+      <div class="cards-grid" id="livrosContainer">Carregando livros...</div>
+    </div>
+
+    <div class="espaco-lateral">
+      <div class="card" style="height: 300px; background-color: #f9d89c; text-align: center;">
+        Anúncio<br>Lateral
+      </div>
+    </div>
+  </section>
+
+  <!-- RODAPÉ -->
+  <div id="footer"></div>
+
+</div>
+
+<!-- SCRIPTS -->
+<script>
+  let livros = [];
+
+  function renderizarLivros(lista) {
+    const container = document.getElementById("livrosContainer");
+    container.innerHTML = "";
+
+    lista.forEach(livro => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img src="${livro.capa || 'livro.jpg'}" alt="${livro.titulo}">
+        <strong>${livro.titulo}</strong>
+        <p>${livro.autor}</p>
+        <a href="livro.html?id=${livro.id}">Ver Detalhes</a>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function filtrarLivros() {
+    const termo = document.getElementById("buscaInput").value.toLowerCase();
+    const filtrados = livros.filter(l =>
+      l.titulo.toLowerCase().includes(termo) ||
+      l.autor.toLowerCase().includes(termo)
+    );
+    renderizarLivros(filtrados);
+  }
+
+  fetch('/dados/livros')
+    .then(res => res.json())
+    .then(dados => {
+      livros = dados.sort((a, b) => a.titulo.localeCompare(b.titulo));
+      renderizarLivros(livros);
+    });
+
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("header").innerHTML = data);
+
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("footer").innerHTML = data);
+</script>
+
+</body>
+</html>
