@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sombras do Norte - Folhas Soltas</title>
+  <title>Obra - Folhas Soltas</title>
   <link rel="stylesheet" href="style.css" />
   <style>
     .pagina-historia {
@@ -58,6 +58,26 @@
       text-align: center;
       margin: 2rem 0;
     }
+
+    .sinopse {
+      text-align: justify;
+      margin: 1rem 0;
+      padding: 1rem;
+      background-color: #fffef9;
+      border: 1px solid #d4af37;
+      border-radius: 6px;
+    }
+
+    .capa-obra {
+      text-align: center;
+      margin: 2rem 0;
+    }
+
+    .capa-obra img {
+      max-width: 200px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
   </style>
 </head>
 <body>
@@ -74,23 +94,8 @@
       </div>
     </div>
 
-    <div class="conteudo-historia">
-      <h2>Sombras do Norte</h2>
-
-      <div class="lista-capitulos">
-        <h3>Capítulos Publicados</h3>
-        <ul>
-          <li><a href="historia.html?id=1">Capítulo 1 – A Chegada</a></li>
-          <li><a href="historia.html?id=2">Capítulo 2 – Ecos do Passado</a></li>
-          <li><a href="historia.html?id=3">Capítulo 3 – O Caminho Gelado</a></li>
-          <li><a href="historia.html?id=4">Capítulo 4 – Encontro com a Sombra</a></li>
-          <li><a href="historia.html?id=5">Capítulo 5 – Neve Vermelha</a></li>
-        </ul>
-      </div>
-
-      <div class="voltar">
-        <a href="historias.html" class="topo-btn">← Voltar para Histórias</a>
-      </div>
+    <div class="conteudo-historia" id="conteudo-obra">
+      <h2>Carregando...</h2>
     </div>
 
     <div class="espaco-lateral">
@@ -113,7 +118,45 @@
   fetch("footer.html")
     .then(res => res.text())
     .then(data => document.getElementById("footer").innerHTML = data);
-</script>
 
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  fetch('/dados/historias')
+    .then(res => res.json())
+    .then(historias => {
+      const obra = historias.find(h => h.id === id);
+
+      const container = document.getElementById("conteudo-obra");
+
+      if (!obra) {
+        container.innerHTML = "<p>Obra não encontrada.</p>";
+        return;
+      }
+
+      container.innerHTML = `
+        <h2>${obra.titulo}</h2>
+        <div class="capa-obra">
+          <img src="${obra.imagem || 'capa.jpg'}" alt="${obra.titulo}">
+        </div>
+        <div class="sinopse">${obra.sinopse || 'Sinopse não disponível.'}</div>
+        <div class="lista-capitulos">
+          <h3>Capítulos Publicados</h3>
+          <ul>
+            ${obra.capitulos.map(cap => `
+              <li>
+                <a href="historia.html?id=${obra.id}&capitulo=${cap.numero}">
+                  Capítulo ${cap.numero} – ${cap.titulo}
+                </a>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+        <div class="voltar">
+          <a href="historias.html" class="topo-btn">← Voltar para Histórias</a>
+        </div>
+      `;
+    });
+</script>
 </body>
 </html>
