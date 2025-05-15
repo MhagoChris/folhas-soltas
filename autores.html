@@ -6,146 +6,44 @@
   <title>Autores - Folhas Soltas</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    .busca-autores {
-      margin: 2rem 0;
-    }
-
-    .busca-autores input {
-      width: 100%;
-      padding: 0.75rem;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    .secao-autores {
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-    }
-
-    .espaco-lateral {
-      width: 10%;
-    }
-
-    .lista-autores {
-      width: 80%;
-    }
-
     .cards-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
-      margin-bottom: 2rem;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
     }
 
     .card {
+      text-align: center;
       background-color: #fffef9;
       border: 1px solid #d4af37;
       padding: 1rem;
       border-radius: 8px;
-      text-align: center;
-      box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
     }
 
     .card img {
       width: 100%;
-      height: auto;
-      border-radius: 50%;
-      max-width: 100px;
-      margin-bottom: 0.5rem;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 6px;
     }
 
-    .card a {
-      display: inline-block;
-      margin-top: 0.5rem;
-      background-color: #f9d89c;
-      padding: 0.4rem 0.8rem;
-      border-radius: 4px;
-      text-decoration: none;
-      color: #5e2c2c;
-      font-weight: bold;
+    .card strong {
+      display: block;
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
     }
   </style>
 </head>
 <body>
 <div class="container">
-
-  <!-- TOPO PADRÃO -->
   <div id="header"></div>
 
-  <!-- CAIXA DE PESQUISA -->
-  <section class="busca-autores">
-    <input type="text" id="buscaInput" placeholder="Buscar autor por nome ou sobrenome..." oninput="filtrarAutores()">
-  </section>
+  <h1 class="text-center">Autores</h1>
+  <div class="cards-grid" id="lista-autores"></div>
 
-  <!-- LISTA DE AUTORES -->
-  <section class="secao-autores">
-    <div class="espaco-lateral">
-      <div class="card" style="height: 300px; background-color: #f9d89c; text-align: center;">
-        Anúncio<br>Lateral
-      </div>
-    </div>
-
-    <div class="lista-autores">
-      <h2 class="text-center">Autores Parceiros</h2>
-      <div class="cards-grid" id="gridAutores">
-        <!-- Inserido via JS -->
-      </div>
-    </div>
-
-    <div class="espaco-lateral">
-      <div class="card" style="height: 300px; background-color: #f9d89c; text-align: center;">
-        Anúncio<br>Lateral
-      </div>
-    </div>
-  </section>
-  
-  <!-- RODAPÉ -->
   <div id="footer"></div>
-
 </div>
-
-<script>
-  const autores = [
-    { id: 1, nome: "Fernanda Albuquerque", foto: "autores/fernanda.jpg", slug: "fernanda-albuquerque" },
-    { id: 2, nome: "Carlos Barreto", foto: "autores/carlos.jpg", slug: "carlos-barreto" },
-    { id: 3, nome: "Julia Costa", foto: "autores/julia.jpg", slug: "julia-costa" },
-    { id: 4, nome: "André Dias", foto: "autores/andre.jpg", slug: "andre-dias" },
-    { id: 5, nome: "Marina Esteves", foto: "autores/marina.jpg", slug: "marina-esteves" }
-    // Mais autores podem ser adicionados aqui
-  ];
-
-  function sobrenomeDe(nomeCompleto) {
-    return nomeCompleto.trim().split(" ").slice(-1)[0].toLowerCase();
-  }
-
-  function renderizarAutores(lista) {
-    const container = document.getElementById('gridAutores');
-    container.innerHTML = '';
-    lista.forEach(autor => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.innerHTML = `
-        <img src="${autor.foto}" alt="${autor.nome}">
-        <strong>${autor.nome}</strong><br>
-        <a href="autor-${autor.slug}.html">Ver Perfil</a>
-      `;
-      container.appendChild(card);
-    });
-  }
-
-  function filtrarAutores() {
-    const busca = document.getElementById('buscaInput').value.toLowerCase();
-    const filtrados = autores
-      .filter(a => a.nome.toLowerCase().includes(busca))
-      .sort((a, b) => sobrenomeDe(a.nome).localeCompare(sobrenomeDe(b.nome)));
-    renderizarAutores(filtrados);
-  }
-
-  // Inicialização
-  renderizarAutores(autores.sort((a, b) => sobrenomeDe(a.nome).localeCompare(sobrenomeDe(b.nome))));
-</script>
 
 <script>
   fetch("header.html")
@@ -155,7 +53,25 @@
   fetch("footer.html")
     .then(res => res.text())
     .then(data => document.getElementById("footer").innerHTML = data);
-</script>
 
+  fetch('/dados/autores')
+    .then(res => res.json())
+    .then(autores => {
+      const container = document.getElementById("lista-autores");
+      container.innerHTML = "";
+
+      autores.forEach(autor => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${autor.foto || 'autor.jpg'}" alt="Foto de ${autor.nome}">
+          <strong>${autor.nome}</strong>
+          <p>${autor.bio ? autor.bio.substring(0, 80) + "..." : "Sem biografia."}</p>
+          <a href="autor.html?id=${autor.id}">Ver mais</a>
+        `;
+        container.appendChild(card);
+      });
+    });
+</script>
 </body>
 </html>

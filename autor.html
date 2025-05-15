@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Autor - Folhas Soltas</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .autor-info {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .autor-foto {
+      width: 200px;
+      flex-shrink: 0;
+    }
+
+    .autor-foto img {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .autor-dados h2 {
+      color: #5e2c2c;
+      font-size: 2rem;
+    }
+
+    .obras-lista, .livros-lista {
+      margin-top: 2rem;
+    }
+
+    .obras-lista ul, .livros-lista ul {
+      padding-left: 1rem;
+    }
+
+    ul li a {
+      color: #5e2c2c;
+      text-decoration: none;
+    }
+
+    ul li a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div id="header"></div>
+
+  <div id="conteudo-autor">Carregando autor...</div>
+
+  <div id="footer"></div>
+</div>
+
+<script>
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("header").innerHTML = data);
+
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => document.getElementById("footer").innerHTML = data);
+
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  Promise.all([
+    fetch('/dados/autores').then(r => r.json()),
+    fetch('/dados/historias').then(r => r.json()),
+    fetch('/dados/livros').then(r => r.json())
+  ]).then(([autores, historias, livros]) => {
+    const autor = autores.find(a => a.id == id);
+    const container = document.getElementById("conteudo-autor");
+
+    if (!autor) {
+      container.innerHTML = "<p>Autor não encontrado.</p>";
+      return;
+    }
+
+    const obras = historias.filter(h => h.autor === autor.nome);
+    const obrasHtml = obras.length ? `
+      <div class="obras-lista">
+        <h3>Obras publicadas</h3>
+        <ul>
+          ${obras.map(h => `<li><a href="obra.html?id=${h.id}">${h.titulo}</a></li>`).join("")}
+        </ul>
+      </div>` : '';
+
+    const livrosAutor = livros.filter(l => l.autor === autor.nome);
+    const livrosHtml = livrosAutor.length ? `
+      <div class="livros-lista">
+        <h3>Livros publicados</h3>
+        <ul>
+          ${livrosAutor.map(l => `<li><a href="livro.html?id=${l.id}">${l.titulo}</a></li>`).join("")}
+        </ul>
+      </div>` : '';
+
+    container.innerHTML = `
+      <div class="autor-info">
+        <div class="autor-foto">
+          <img src="${autor.foto || 'autor.jpg'}" alt="${autor.nome}">
+        </div>
+        <div class="autor-dados">
+          <h2>${autor.nome}</h2>
+          <p>${autor.bio || 'Sem biografia cadastrada.'}</p>
+        </div>
+      </div>
+      ${obrasHtml}
+      ${livrosHtml}
+    `;
+  });
+</script>
+</body>
+</html>

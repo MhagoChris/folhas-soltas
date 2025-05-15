@@ -90,8 +90,8 @@ app.get('/autores.html', (req, res) => {
 });
 
 // Seção Autores
-app.get('/autores.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'autores.html'));
+app.get('/autor.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'autor.html'));
 });
 
 // Seção Sobre
