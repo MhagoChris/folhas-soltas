@@ -78,30 +78,7 @@
 
     <div class="lista-historias">
       <h2 class="text-center">Histórias Publicadas</h2>
-      <div class="cards-grid">
-        <!-- Exemplo de Card de História -->
-        <div class="card">
-          <img src="historia1.jpg" alt="Sombras do Norte">
-          <strong>Sombras do Norte</strong><br>
-          <a href="historia-sombras-do-norte.html">Ver Capítulos</a>
-        </div>
-        <div class="card">
-          <img src="historia2.jpg" alt="Fragmentos do Infinito">
-          <strong>Fragmentos do Infinito</strong><br>
-          <a href="historia-fragmentos-do-infinito.html">Ver Capítulos</a>
-        </div>
-        <div class="card">
-          <img src="historia3.jpg" alt="Chuva de Fogo">
-          <strong>Chuva de Fogo</strong><br>
-          <a href="historia-chuva-de-fogo.html">Ver Capítulos</a>
-        </div>
-        <div class="card">
-          <img src="historia4.jpg" alt="A Canção das Almas">
-          <strong>A Canção das Almas</strong><br>
-          <a href="historia-cancao-das-almas.html">Ver Capítulos</a>
-        </div>
-        <!-- Adicione mais cards conforme necessário -->
-      </div>
+      <div class="cards-grid" id="lista-historias"></div>
     </div>
 
     <div class="espaco-lateral">
@@ -124,6 +101,26 @@
   fetch("footer.html")
     .then(res => res.text())
     .then(data => document.getElementById("footer").innerHTML = data);
+</script>
+
+<script>
+  fetch('/dados/historias')
+    .then(res => res.json())
+    .then(historias => {
+      const container = document.getElementById("lista-historias");
+      container.innerHTML = '';
+
+      historias.forEach(hist => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${hist.imagem || 'historia.jpg'}" alt="${hist.titulo}">
+          <strong>${hist.titulo}</strong><br>
+          <a href="obra.html?id=${hist.id}">Ver Capítulos</a>
+        `;
+        container.appendChild(card);
+      });
+    });
 </script>
 
 </body>

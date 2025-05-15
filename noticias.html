@@ -120,22 +120,47 @@
     }
   }
 
-  criarAbas();
-  mostrarAba('geral');
+  function criarAbas() {
+  fetch('/dados/noticias')
+    .then(res => res.json())
+    .then(noticias => {
+      const categorias = {
+        geral: [],
+        entrevistas: [],
+        eventos: [],
+        dicas: [],
+        videos: []
+      };
 
-  // Carrossel simples
-  let current = 0;
-  const slides = document.querySelectorAll('.carrossel-item');
-  function mostrarSlide(i) {
-    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
-  }
-  function proximoSlide() {
-    current = (current + 1) % slides.length;
-    mostrarSlide(current);
-  }
-  let intervalo = setInterval(proximoSlide, 5000);
-  function pausarCarrossel() { clearInterval(intervalo); }
-  function iniciarCarrossel() { intervalo = setInterval(proximoSlide, 5000); }
+      noticias.forEach(n => {
+        const cat = (n.categoria || "geral").toLowerCase();
+        if (categorias[cat]) categorias[cat].push(n);
+      });
+
+      for (const cat in categorias) {
+        const container = document.getElementById(cat);
+        const titulo = nomesAbas[cat];
+        const grupo = categorias[cat];
+
+        container.innerHTML = `
+          <h2 class="text-center">${titulo}</h2>
+          <div class="cards-grid">
+            ${grupo.slice(0, 12).map((n, i) => `
+              <div class="card">
+                <img src="${n.imagem || 'noticia.jpg'}" alt="${n.titulo}">
+                <strong>${n.titulo}</strong><br>
+                <a href="noticia.html?id=${n.id || i}">Leia mais</a>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="text-center" style="margin-top: 1rem;">
+            <a href="todas-noticias.html" class="topo-btn">Ver Todas as Notícias</a>
+          </div>
+        `;
+      }
+    });
+}
 </script>
 
 <script>
