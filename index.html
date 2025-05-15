@@ -145,5 +145,83 @@
     .then(data => document.getElementById("footer").innerHTML = data);
 </script>
 
+<script>
+  // Carregar Últimos Capítulos
+  fetch('/dados/historias')
+    .then(res => res.json())
+    .then(historias => {
+      const container = document.querySelector('.secao h2:contains("Últimos Capítulos")').nextElementSibling;
+      container.innerHTML = ''; // limpar cards existentes
+
+      const ultimosCapitulos = [];
+
+      historias.forEach(historia => {
+        if (historia.capitulos && historia.capitulos.length > 0) {
+          const ultimo = historia.capitulos[historia.capitulos.length - 1];
+          ultimosCapitulos.push({
+            historiaId: historia.id,
+            tituloHistoria: historia.titulo,
+            numero: ultimo.numero,
+            tituloCapitulo: ultimo.titulo,
+            imagem: historia.imagem || 'capa.jpg' // imagem padrão
+          });
+        }
+      });
+
+      ultimosCapitulos.slice(-4).reverse().forEach(cap => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${cap.imagem}" alt="${cap.tituloHistoria}" style="width:100%; border-radius:4px;">
+          <strong>${cap.tituloHistoria}</strong><br>
+          Capítulo ${cap.numero}: ${cap.tituloCapitulo}<br>
+          <a href="historia.html?id=${cap.historiaId}&capitulo=${cap.numero}">Leia mais</a>
+        `;
+        container.appendChild(card);
+      });
+    });
+
+  // Carregar Notícias Literárias
+  fetch('/dados/noticias')
+    .then(res => res.json())
+    .then(noticias => {
+      const container = document.querySelector('.secao h2:contains("Notícias Literárias")').nextElementSibling;
+      container.innerHTML = '';
+
+      noticias.slice(-4).reverse().forEach((n, i) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${n.imagem || 'noticia.jpg'}" alt="${n.titulo}" style="width:100%; border-radius:4px;">
+          <strong>${n.titulo}</strong><br>
+          <a href="noticia.html?id=${i}">Leia mais</a>
+        `;
+        container.appendChild(card);
+      });
+    });
+
+  // Carregar Livros em Destaque
+  fetch('/dados/livros')
+    .then(res => res.json())
+    .then(livros => {
+      const container = document.querySelector('.secao h2:contains("Livros em Destaque")').nextElementSibling;
+      container.innerHTML = '';
+
+      livros
+        .filter(l => l.destaque)
+        .slice(-4).reverse()
+        .forEach((livro, i) => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <img src="${livro.capa || 'livro.jpg'}" alt="${livro.titulo}" style="width:100%; border-radius:4px;">
+            <strong>${livro.titulo}</strong><br>
+            <a href="livro.html?id=${i}">Ver detalhes</a>
+          `;
+          container.appendChild(card);
+        });
+    });
+</script>
+
 </body>
 </html>
