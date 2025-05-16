@@ -218,7 +218,7 @@
         <input type="checkbox"> Destaque no carrossel
       </label>
 
-      <button onclick="salvarItemEditado()">Salvar</button>
+      <button onclick="salvarNovaNoticia()">Salvar Notícia</button>
     </section>
 
     <script>
@@ -258,7 +258,7 @@
       <textarea rows="4"></textarea>
       <label>Foto:</label>
       <input type="file" id="autor-foto">
-      <button onclick="salvarItemEditado()">Salvar</button>
+      <button onclick="salvarNovoAutor()">Salvar Autor</button>
     </section>
 
     <!-- LIVROS -->
@@ -275,7 +275,7 @@
       <label>Link de Compra:</label>
       <input type="url">
       <label>Destaque no site: <input type="checkbox"></label>
-      <button onclick="salvarItemEditado()">Salvar</button>
+      <button onclick="salvarNovoLivro()">Salvar Livro</button>
     </section>
 
     <!-- SOBRE O SITE / EQUIPE -->
@@ -307,7 +307,7 @@
       </div>
       <button type="button" onclick="adicionarRedator()">Adicionar Redator</button>
 
-      <button onclick="salvarItemEditado()">Salvar</button>
+      <button onclick="salvarSobre()">Salvar Sobre</button>
     </section>
 
     <script>
@@ -419,7 +419,7 @@
     const formData = new FormData();
     formData.append("file", arquivo);
     formData.append("upload_preset", UPLOAD_PRESET);
-    formData.append("folder", `FolhasSoltas/Noticias/${subtipo}`);
+    formData.append("folder", `FolhasSoltas/${subtipo}`);
 
     const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
       method: "POST",
@@ -430,106 +430,191 @@
     return data.secure_url;
   }
 
-  async function salvarItemEditado() {
-    const params = new URLSearchParams(window.location.search);
-    const tipo = params.get("tipo");
-    const id = parseInt(params.get("id"));
+  async function salvarNovaNoticia() {
+    const categoria = document.getElementById("categoria-noticia").value;
+    const titulo = document.querySelector('#campo-titulo input')?.value.trim() || "";
+    const destaque = document.querySelector('#noticias input[type="checkbox"]').checked;
 
-    if (!tipo || isNaN(id)) {
-      alert("⚠️ Você está tentando salvar sem editar um item existente.");
-      return;
+    let imagemInput;
+    if (categoria === "evento") {
+      imagemInput = document.getElementById("evento-imagem");
+    } else if (categoria === "video") {
+      imagemInput = document.getElementById("video-capa");
+    } else {
+      imagemInput = document.getElementById("noticia-imagem");
     }
 
-    const jsonURL = `${tipo}.json`;
+    const arquivoImagem = imagemInput?.files[0];
+    let urlImagem = "";
+    if (arquivoImagem) {
+      urlImagem = await uploadImagemParaCloudinary(arquivoImagem, `Noticias/${categoria}`);
+    }
+
+    const novaNoticia = {
+      id: Date.now().toString(),
+      titulo,
+      categoria,
+      imagem: urlImagem,
+      destaque
+    };
+
+    if (categoria === "video") {
+      novaNoticia.canal = document.querySelector('#video-campos input[type="text"]').value;
+      novaNoticia.descricao = document.querySelector('#video-campos textarea').value;
+      novaNoticia.url = document.querySelector('#video-campos input[type="url"]').value;
+    } else if (categoria === "evento") {
+      const campos = document.querySelectorAll('#evento-campos input, #evento-campos textarea');
+      novaNoticia.producao = campos[0].value;
+      novaNoticia.local = campos[1].value;
+      novaNoticia.descricao = campos[2].value;
+    } else {
+      novaNoticia.chamada = document.querySelector('#campo-chamada textarea')?.value || "";
+      novaNoticia.texto = document.querySelector('#campo-texto textarea')?.value || "";
+      novaNoticia.fonte = document.querySelector('#campo-fonte input')?.value || "";
+    }
 
     try {
-      const response = await fetch(jsonURL);
-      const dados = await response.json();
+      const res = await fetch("noticias.json");
+      const noticias = await res.json();
+      noticias.push(novaNoticia);
 
-      let itemEditado = dados[id];
-
-      if (!itemEditado) {
-        alert("⚠️ Item não encontrado para editar.");
-        return;
-      }
-
-      // Atualizar os campos com base no tipo
-      if (tipo === "noticias") {
-        itemEditado.titulo = document.querySelector('#noticias input[type="text"]').value || "";
-        itemEditado.categoria = document.getElementById("categoria-noticia").value;
-        itemEditado.destaque = document.querySelector('#noticias input[type="checkbox"]').checked;
-        
-      let imagemInput;
-      if (itemEditado.categoria === "evento") {
-        imagemInput = document.getElementById("evento-imagem");
-      } else if (itemEditado.categoria === "video") {
-        imagemInput = document.getElementById("video-capa");
-      } else {
-        imagemInput = document.getElementById("noticia-imagem");
-      }
-
-      const arquivoImagem = imagemInput?.files[0];
-      if (arquivoImagem) {
-        const urlImagem = await uploadImagemParaCloudinary(arquivoImagem, itemEditado.categoria);
-        itemEditado.imagem = urlImagem;
-      }
-
-        if (itemEditado.categoria === "video") {
-          itemEditado.canal = document.querySelector('#video-campos input[type="text"]').value;
-          itemEditado.descricao = document.querySelector('#video-campos textarea').value;
-          itemEditado.url = document.querySelector('#video-campos input[type="url"]').value;
-        } else if (itemEditado.categoria === "evento") {
-          const campos = document.querySelectorAll('#evento-campos input, #evento-campos textarea');
-          itemEditado.producao = campos[0].value;
-          itemEditado.local = campos[1].value;
-          itemEditado.descricao = campos[2].value;
-        } else {
-          itemEditado.chamada = document.querySelector('#campo-chamada textarea')?.value || "";
-          itemEditado.texto = document.querySelector('#campo-texto textarea')?.value || "";
-          itemEditado.fonte = document.querySelector('#campo-fonte input')?.value || "";
-        }
-      }
-
-      else if (tipo === "historias") {
-        const campos = document.querySelectorAll('#historias input, #historias textarea');
-        itemEditado.autor = campos[0].value;
-        itemEditado.titulo = campos[1].value;
-        itemEditado.capitulo = campos[2].value;
-        itemEditado.conteudo = campos[3].value;
-      }
-
-      else if (tipo === "livros") {
-        const campos = document.querySelectorAll('#livros input, #livros textarea');
-        itemEditado.titulo = campos[0].value;
-        itemEditado.autor = campos[1].value;
-        itemEditado.sinopse = campos[2].value;
-        itemEditado.link = campos[4].value;
-        itemEditado.destaque = campos[5].checked;
-      }
-
-      else if (tipo === "autores") {
-        const campos = document.querySelectorAll('#autores input, #autores textarea');
-        itemEditado.nome = campos[0].value;
-        itemEditado.bio = campos[1].value;
-      }
-
-      // Agora salva o novo array no backend
-      const saveResponse = await fetch(`/salvar/${tipo}`, {
+      const save = await fetch("/salvar/noticias", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(dados)
+        body: JSON.stringify(noticias)
       });
 
-      if (saveResponse.ok) {
-        alert("✅ Alterações salvas com sucesso!");
-        window.location.href = "editor.html";
+      if (save.ok) {
+        alert("✅ Notícia salva com sucesso!");
+        location.reload();
       } else {
-        alert("❌ Erro ao salvar alterações.");
+        alert("❌ Erro ao salvar no servidor.");
       }
 
     } catch (err) {
       console.error(err);
-      alert("❌ Ocorreu um erro ao salvar.");
+      alert("❌ Erro inesperado.");
+    }
+  }
+
+  async function salvarNovoAutor() {
+    const nome = document.querySelector('#autores input[type="text"]').value.trim();
+    const bio = document.querySelector('#autores textarea')?.value.trim() || "";
+    const imagemInput = document.getElementById("autor-foto");
+    const arquivoImagem = imagemInput?.files[0];
+    let urlImagem = "";
+
+    if (arquivoImagem) {
+      urlImagem = await uploadImagemParaCloudinary(arquivoImagem, "Autores");
+    }
+
+    const novoAutor = {
+      id: Date.now().toString(),
+      nome,
+      bio,
+      imagem: urlImagem
+    };
+
+    try {
+      const res = await fetch("autores.json");
+      const autores = await res.json();
+
+      const existe = autores.some(a => a.nome.trim().toLowerCase() === nome.toLowerCase());
+      if (existe) {
+        alert("⚠️ Este autor já está cadastrado.");
+        return;
+      }
+
+      autores.push(novoAutor);
+
+      const save = await fetch("/salvar/autores", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(autores)
+      });
+
+      if (save.ok) {
+        alert("✅ Autor salvo com sucesso!");
+        location.reload();
+      } else {
+        alert("❌ Erro ao salvar autor.");
+      }
+
+    } catch (err) {
+      console.error(err);
+      alert("❌ Erro inesperado ao salvar autor.");
+    }
+  }
+
+  async function salvarNovoLivro() {
+    const campos = document.querySelectorAll('#livros input, #livros textarea');
+    const titulo = campos[0].value.trim();
+    const autor = campos[1].value.trim();
+    const sinopse = campos[2].value.trim();
+    const link = campos[3].value.trim();
+    const destaque = campos[4].checked;
+    const imagemInput = document.getElementById("livro-capa");
+    const arquivoImagem = imagemInput?.files[0];
+    let urlImagem = "";
+
+    if (arquivoImagem) {
+      urlImagem = await uploadImagemParaCloudinary(arquivoImagem, "Livros");
+    }
+
+    const novoLivro = {
+      id: Date.now().toString(),
+      titulo,
+      autor,
+      sinopse,
+      link,
+      destaque,
+      imagem: urlImagem
+    };
+
+    try {
+      const res = await fetch("livros.json");
+      const livros = await res.json();
+      livros.push(novoLivro);
+
+      const save = await fetch("/salvar/livros", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(livros)
+      });
+
+      if (save.ok) {
+        alert("✅ Livro salvo com sucesso!");
+        location.reload();
+      } else {
+        alert("❌ Erro ao salvar livro.");
+      }
+
+    } catch (err) {
+      console.error(err);
+      alert("❌ Erro inesperado ao salvar livro.");
+    }
+  }
+
+  async function salvarSobre() {
+    const texto = document.querySelector('#sobre textarea')?.value.trim() || "";
+    const sobre = { texto };
+
+    try {
+      const save = await fetch("/salvar/sobre", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(sobre)
+      });
+
+      if (save.ok) {
+        alert("✅ Texto "Sobre" salvo com sucesso!");
+      } else {
+        alert("❌ Erro ao salvar 'sobre'.");
+      }
+
+    } catch (err) {
+      console.error(err);
+      alert("❌ Erro inesperado ao salvar 'sobre'.");
     }
   }
 </script>
