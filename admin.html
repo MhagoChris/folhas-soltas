@@ -187,7 +187,7 @@
       <!-- Comum: imagem -->
       <div id="campo-imagem">
         <label>Imagem da Notícia:</label>
-        <input type="file">
+        <input type="file" id="noticia-imagem">
       </div>
 
       <!-- EVENTO -->
@@ -199,7 +199,7 @@
         <label>Descrição do Evento:</label>
         <textarea rows="4"></textarea>
         <label>Imagem:</label>
-        <input type="file">
+        <input type="file" id="evento-imagem">
       </div>
 
       <!-- VÍDEO -->
@@ -211,7 +211,7 @@
         <label>Link ou Upload:</label>
         <input type="url">
         <label>Capa do Vídeo:</label>
-        <input type="file">
+        <input type="file" id="video-capa">
       </div>
 
       <label>
@@ -257,7 +257,7 @@
       <label>Biografia:</label>
       <textarea rows="4"></textarea>
       <label>Foto:</label>
-      <input type="file">
+      <input type="file" id="autor-foto">
       <button onclick="salvarItemEditado()">Salvar</button>
     </section>
 
@@ -271,7 +271,7 @@
       <label>Sinopse:</label>
       <textarea rows="4"></textarea>
       <label>Capa:</label>
-      <input type="file">
+      <input type="file" id="livro-capa">
       <label>Link de Compra:</label>
       <input type="url">
       <label>Destaque no site: <input type="checkbox"></label>
@@ -412,6 +412,24 @@
 </script>
 
 <script>
+  const CLOUD_NAME = "dsdx49n1b";
+  const UPLOAD_PRESET = "folhassoltas_publico";
+
+  async function uploadImagemParaCloudinary(arquivo, subtipo) {
+    const formData = new FormData();
+    formData.append("file", arquivo);
+    formData.append("upload_preset", UPLOAD_PRESET);
+    formData.append("folder", `FolhasSoltas/Noticias/${subtipo}`);
+
+    const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await response.json();
+    return data.secure_url;
+  }
+
   async function salvarItemEditado() {
     const params = new URLSearchParams(window.location.search);
     const tipo = params.get("tipo");
@@ -440,6 +458,21 @@
         itemEditado.titulo = document.querySelector('#noticias input[type="text"]').value || "";
         itemEditado.categoria = document.getElementById("categoria-noticia").value;
         itemEditado.destaque = document.querySelector('#noticias input[type="checkbox"]').checked;
+        
+      let imagemInput;
+      if (itemEditado.categoria === "evento") {
+        imagemInput = document.getElementById("evento-imagem");
+      } else if (itemEditado.categoria === "video") {
+        imagemInput = document.getElementById("video-capa");
+      } else {
+        imagemInput = document.getElementById("noticia-imagem");
+      }
+
+      const arquivoImagem = imagemInput?.files[0];
+      if (arquivoImagem) {
+        const urlImagem = await uploadImagemParaCloudinary(arquivoImagem, itemEditado.categoria);
+        itemEditado.imagem = urlImagem;
+      }
 
         if (itemEditado.categoria === "video") {
           itemEditado.canal = document.querySelector('#video-campos input[type="text"]').value;
@@ -667,6 +700,23 @@
 
   // Carregar histórias assim que abrir admin
   window.addEventListener("DOMContentLoaded", carregarHistoriasNoSelect);
+  const CLOUD_NAME = "dsdx49n1b";
+  const UPLOAD_PRESET = "folhassoltas_publico";
+
+  async function uploadImagemParaCloudinary(arquivo, subtipo) {
+    const formData = new FormData();
+    formData.append("file", arquivo);
+    formData.append("upload_preset", UPLOAD_PRESET);
+    formData.append("folder", `FolhasSoltas/Noticias/${subtipo}`);
+
+    const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await response.json();
+    return data.secure_url;
+  }
 </script>
 
 <script>
